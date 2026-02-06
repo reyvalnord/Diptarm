@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DiptARM Format</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Scale Down */
+    html { font-size: 13px; }
+
+    :root {
+      /* Palette konsisten dengan st.html */
+      --primary: #d32f2f;      /* Christmas Red */
+      --primary-dark: #b91c1c;
+      --secondary: #065f46;    /* Deep Emerald Green */
+      eeyeey-)-bg-green-start: #022c22;se e
+      --bg-green-end: #0d9488;
+      --gold: #ffd700;         /* Festive Gold */
+      --white: #ffffff;
+      
+      /* Glassmorphism Vars */
+      --glass-bg: rgba(255, 255, 255, 0.90);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: rgba(0, 20, 15, 0.4);
+      
+      --text-dark: #0f291e;
+      --text-muted: #64748b;
+      
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      /* Background Natal Gelap */
+      background: linear-gradient(135deg, var(--bg-green-start) 0%, var(--bg-green-end) 100%);
+      min-height: 100vh;
+      padding: 24px 20px;
+      color: var(--text-dark);
+      position: relative; 
+      overflow-x: hidden;
+    }
+
+    /* Efek Salju Jatuh */
+    @keyframes snowMove { from{background-position:0 0;} to{background-position:0 600px;} }
+    body::after {
+      content: "";
+      position: fixed; left: 0; right: 0; top: 0; bottom: 0; pointer-events: none; z-index: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 2px), radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 2px);
+      background-size: 40px 40px, 80px 80px;
+      opacity: 0.3; 
+      animation: snowMove 20s linear infinite;
+    }
+
+    .wrap { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+    
+    /* Header */
+    header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    header h1 { 
+      margin: 0; 
+      color: var(--white); 
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem; 
+      font-weight: 800; 
+      display: flex; align-items: center; gap: 8px;
+      text-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
+    }
+    h1 .flag { display: inline-block; animation: wave 2s infinite ease-in-out; filter: drop-shadow(0 0 5px var(--gold)); }
+    @keyframes wave { 0%{transform:rotate(0deg);}25%{transform:rotate(15deg);}50%{transform:rotate(-15deg);}75%{transform:rotate(15deg);}100%{transform:rotate(0);} }
+
+    /* Tombol Kembali */
+    header .brand-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(5px);
+      color: var(--gold);
+      padding: 8px 16px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: .8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all .2s ease;
+      font-family: 'Outfit', sans-serif;
+    }
+    header .brand-badge:hover { 
+      background: var(--white); 
+      color: var(--primary); 
+      transform: translateX(-3px); 
+      box-shadow: 0 0 15px rgba(255,255,255,0.4);
+    }
+
+    .lead { font-size: 0.85rem; margin: 0 0 20px; color: #e2e8f0; font-weight: 500; opacity: 0.9; }
+
+    /* Glassmorphism Card */
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 15px 40px var(--glass-shadow);
+      border: 2px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Festive Strip Decoration on Card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--primary),
+        var(--primary) 10px,
+        var(--gold) 10px,
+        var(--gold) 20px,
+        var(--secondary) 20px,
+        var(--secondary) 30px
+      );
+      z-index: 2;
+    }
+
+    /* Layout Form */
+    .top-row { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; position: relative; z-index: 5; }
+    .custom-select { position: relative; flex: 1; min-width: 200px; }
+
+    /* Select Button */
+    .select-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 12px 16px; 
+      border-radius: 12px; 
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      cursor: pointer; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: all .2s ease;
+      color: var(--text-dark);
+    }
+    .select-btn:hover { border-color: var(--secondary); box-shadow: 0 6px 15px rgba(6, 95, 70, 0.1); }
+    .select-label { font-weight: 700; font-size: 0.9rem; font-family: 'Outfit', sans-serif; }
+    
+    .caret {
+      width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+      background: var(--secondary); color: #fff; font-size: 10px; font-weight: bold;
+      transition: transform .2s ease;
+    }
+    .custom-select.open .caret { transform: rotate(180deg); background: var(--primary); }
+
+    /* Dropdown Panel */
+    .panel {
+      position: absolute; left: 0; right: 0; top: calc(100% + 8px);
+      background: #fff;
+      border-radius: 12px; padding: 6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+      border: 1px solid #f1f5f9;
+      transform-origin: top center; opacity: 0; pointer-events: none; transform: translateY(-8px);
+      transition: all .2s cubic-bezier(.2,.9,.2,1);
+      max-height: 280px; overflow: auto;
+      z-index: 100;
+    }
+    .panel.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    .option {
+      padding: 10px 12px; border-radius: 8px; margin-bottom: 2px; cursor: pointer;
+      font-weight: 600; font-size: 0.85rem; color: var(--text-dark);
+      transition: all .1s;
+    }
+    .option:hover { background: #f0fdf4; color: var(--secondary); }
+    .option.selected { background: linear-gradient(90deg, #fef2f2, #fff); color: var(--primary); border-left: 3px solid var(--primary); }
+
+    /* Editor Textarea */
+    .editor-wrap { margin-top: 0; position: relative; }
+    textarea.editor {
+      width: 100%; min-height: 350px; padding: 16px; border-radius: 14px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff; /* White bg for readability */
+      resize: vertical; 
+      font-family: 'Poppins', sans-serif; font-size: 0.85rem; line-height: 1.6; color: #334155;
+      transition: all .2s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    }
+    textarea.editor:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2); }
+
+    /* Bottom Actions */
+    .bottom-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+    
+    .hint { 
+      font-size: 0.75rem; color: var(--text-muted); 
+      background: rgba(255,255,255,0.5); padding: 6px 12px; border-radius: 8px;
+    }
+
+    .btn-copy {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; border: none; padding: 12px 24px; border-radius: 12px;
+      cursor: pointer; font-weight: 700; font-size: 0.9rem; font-family: 'Outfit', sans-serif;
+      box-shadow: 0 6px 15px rgba(185, 28, 28, 0.3);
+      transition: all .2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(185, 28, 28, 0.4); filter: brightness(1.1); }
+    .btn-copy:active { transform: translateY(1px); }
+
+    /* Decoration Corner */
+    .card::after {
+      content: '☃️';
+      position: absolute; bottom: 10px; right: 10px;
+      font-size: 1.5rem; opacity: 0.2; pointer-events: none;
+    }
+
+    /* Small screens */
+    @media (max-width: 500px){
+      .top-row { flex-direction: column; align-items: stretch; }
+      .bottom-bar { flex-direction: column; gap: 12px; align-items: stretch; }
+      .hint { text-align: center; }
+      .btn-copy { width: 100%; justify-content: center; }
+    }
+
+    /* Toast Notification */
+    .tiny-toast-custom {
+      background: linear-gradient(90deg, var(--secondary), #047857) !important;
+      border: 1px solid #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+      font-weight: 600;
+    }
+
+    /* =========================================================
+       TAMBAHAN: KUNCI TANGGAL 25–31 DESEMBER 2025 (WIB)
+       - Tidak menghapus apa pun, hanya menambahkan overlay & style
+       ========================================================= */
+/* ====== CHRISTMAS FUN THEME (NO :root) ====== */
+#promoLockOverlay{
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 99999;
+  padding: 18px;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,59,87,.18), transparent 42%),
+    radial-gradient(circle at 78% 28%, rgba(31,191,117,.16), transparent 48%),
+    radial-gradient(circle at 50% 105%, rgba(255,209,102,.14), transparent 40%),
+    linear-gradient(135deg, var(--bg-green-start, #0b6b46) 0%, var(--bg-green-end, #062d1e) 100%);
+  overflow: hidden;
+}
+
+/* Salju + bokeh */
+#promoLockOverlay::after{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 1px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.65) 1px, transparent 2px),
+    radial-gradient(circle, rgba(255,209,102,.35) 2px, transparent 3px);
+  background-size: 36px 36px, 72px 72px, 140px 140px;
+  opacity: .35;
+  animation: snowMove 18s linear infinite;
+  filter: blur(.15px);
+}
+
+/* Lampu gantung lucu di atas */
+#promoLockOverlay::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height: 120px;
+  pointer-events:none;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 60%),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 28px,
+      rgba(255,255,255,.20) 28px 30px
+    );
+  opacity: .6;
+  transform: translateY(-30px);
+}
+
+#promoLockOverlay .lock-card{
+  width: 100%;
+  max-width: 560px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  overflow: hidden;
+
+  padding: 24px 18px 18px;
+  border-radius: 22px;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.10));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border: 2px solid var(--glass-border, rgba(255,255,255,.22));
+  box-shadow:
+    0 18px 55px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.06) inset;
+
+  animation: cardPop .35s ease-out;
+}
+
+/* Candy cane stripe header */
+#promoLockOverlay .lock-card::before{
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height: 10px;
+  background: repeating-linear-gradient(
+    45deg,
+    #fff7e8,
+    #fff7e8 10px,
+    var(--primary, #ff3b57) 10px,
+    var(--primary, #ff3b57) 20px
+  );
+  box-shadow: 0 8px 22px rgba(255,59,87,.22);
+}
+
+/* Glow sudut-sudut */
+#promoLockOverlay .lock-card::after{
+  content:"";
+  position:absolute; inset:-30%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,209,102,.22), transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(31,191,117,.18), transparent 48%),
+    radial-gradient(circle at 55% 15%, rgba(255,59,87,.15), transparent 42%);
+  filter: blur(6px);
+  opacity: .9;
+}
+
+#promoLockOverlay h2{
+  margin: 16px 0 6px;
+  font-family:'Outfit',sans-serif;
+  color: var(--white, #ffffff);
+  font-size: 1.25rem;
+  letter-spacing: .2px;
+  text-shadow:
+    0 2px 14px rgba(255,209,102,.20),
+    0 10px 30px rgba(0,0,0,.25);
+}
+
+#promoLockOverlay p{
+  margin: 8px 0;
+  color: rgba(255,255,255,.92);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+
+#promoLockOverlay .badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  border: 1px solid rgba(255,209,102,0.55);
+  background: linear-gradient(180deg, rgba(255,209,102,.22), rgba(255,209,102,.12));
+  color: #ffe6a6;
+
+  font-weight: 900;
+  font-size: .86rem;
+  font-family:'Outfit',sans-serif;
+
+  box-shadow:
+    0 10px 22px rgba(255,209,102,.12),
+    0 0 0 1px rgba(255,255,255,.06) inset;
+
+  position: relative;
+  overflow: hidden;
+}
+
+#promoLockOverlay .badge::after{
+  content:"";
+  position:absolute;
+  top:-40%; left:-30%;
+  width: 60%; height: 180%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: rotate(18deg);
+  animation: shimmer 2.2s ease-in-out infinite;
+  opacity: .55;
+}
+
+#promoLockOverlay .mini{
+  margin-top: 12px;
+  font-size: .82rem;
+  color: rgba(255,255,255,.9);
+  font-weight: 650;
+}
+
+/* Animations */
+@keyframes snowMove{
+  0%   { transform: translateY(-10px); background-position: 0 0, 0 0, 0 0; }
+  100% { transform: translateY(120px); background-position: 0 520px, 0 820px, 0 360px; }
+}
+@keyframes cardPop{
+  from { transform: translateY(10px) scale(.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes shimmer{
+  0%   { transform: translateX(-30%) rotate(18deg); }
+  50%  { transform: translateX(140%) rotate(18deg); }
+  100% { transform: translateX(140%) rotate(18deg); }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  #promoLockOverlay::after,
+  #promoLockOverlay .badge::after,
+  #promoLockOverlay .lock-card{
+    animation: none !important;
+  }
+}
+  
+/* =========================================================
+   REAL MADRID 2D CARTOON THEME (SAFE OVERRIDES)
+   - Tidak menghapus / mengurangi kode yang ada
+   - Hanya menimpa warna + menambah dekor 2D kartun
+   ========================================================= */
+
+:root{
+  --primary: #00529F;        /* Real Madrid Royal Blue */
+  --primary-dark: #003C74;
+  --secondary: #5B2E90;      /* Accent (purple-ish) */
+  --bg-green-start: #ffffff; /* keep var names so JS/other CSS tetap aman */
+  --bg-green-end: #dbeafe;
+  --gold: #FDB913;           /* Real Madrid Gold */
+  --white: #ffffff;
+
+  --glass-bg: rgba(255,255,255,0.92);
+  --glass-border: rgba(0,82,159,0.22);
+  --glass-shadow: rgba(0,40,90,0.22);
+
+  --text-dark: #0a1b2e;
+  --text-muted: #33506b;
+
+  --radius: 18px;
+}
+
+/* Background: kartun 2D, cerah, dengan pola bola & bintang */
+body{
+  background: linear-gradient(135deg, #ffffff 0%, #eef6ff 40%, #dbeafe 100%) !important;
+  color: var(--text-dark) !important;
+}
+
+/* Ganti efek "salju" jadi pattern bola + bintang (tetap pakai keyframes snowMove agar tidak ganggu JS/CSS lain) */
+body::after{
+  opacity: .55 !important;
+  background-image:
+    radial-gradient(circle at 16px 16px, rgba(255,255,255,.95) 0 7px, rgba(0,82,159,.25) 7px 8px, transparent 8px 44px),
+    radial-gradient(circle at 46px 40px, rgba(253,185,19,.55) 0 2px, transparent 3px),
+    radial-gradient(circle at 20px 52px, rgba(0,82,159,.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 80px 18px, rgba(253,185,19,.35) 0 3px, transparent 4px);
+  background-size: 96px 96px, 140px 140px, 160px 160px, 220px 220px !important;
+  animation: snowMove 16s linear infinite !important;
+}
+
+/* Header jadi banner kartun */
+header{
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.72);
+  border: 3px solid rgba(0,82,159,.18);
+  box-shadow: 0 10px 0 rgba(0,82,159,.14);
+}
+
+/* Judul: nuansa klub */
+header h1{
+  color: var(--primary) !important;
+  text-shadow: 0 2px 0 rgba(253,185,19,.35), 0 10px 24px rgba(0,82,159,.12) !important;
+}
+
+/* Biar emoji Natal tidak dominan, tapi tetap tidak dihapus */
+header h1 .flag{
+  filter: grayscale(1) opacity(.35) !important;
+}
+
+/* Tombol kembali: gaya "sticker" 2D */
+header .brand-badge{
+  background: linear-gradient(180deg, rgba(0,82,159,.18), rgba(0,82,159,.08)) !important;
+  color: var(--primary) !important;
+  border: 2px solid rgba(0,82,159,.25) !important;
+  box-shadow: 0 6px 0 rgba(0,82,159,.12);
+}
+header .brand-badge:hover{
+  background: var(--primary) !important;
+  color: #fff !important;
+  transform: translateX(-3px) translateY(-1px) !important;
+  box-shadow: 0 8px 0 rgba(0,82,159,.20);
+}
+
+/* Lead text biar cocok background terang */
+.lead{ color: rgba(10,27,46,.75) !important; }
+
+/* Card: outline tebal + shadow kartun */
+.card{
+  border-radius: 22px !important;
+  border: 3px solid rgba(0,82,159,.22) !important;
+  background: var(--glass-bg) !important;
+  box-shadow:
+    0 14px 0 rgba(0,82,159,.16),
+    0 22px 50px rgba(0,40,90,.18) !important;
+}
+
+/* Strip atas: biru-putih-emas */
+.card::before{
+  background: repeating-linear-gradient(
+    45deg,
+    #ffffff 0 12px,
+    var(--gold) 12px 24px,
+    var(--primary) 24px 36px
+  ) !important;
+}
+
+/* Ganti dekor sudut dari snowman -> bola (tidak hapus, hanya override) */
+.card::after{
+  content: '⚽' !important;
+  opacity: .18 !important;
+  font-size: 1.8rem !important;
+}
+
+/* Select/button: gaya kartun */
+.select-btn{
+  border: 2px solid rgba(0,82,159,.18) !important;
+  box-shadow: 0 8px 0 rgba(0,82,159,.10) !important;
+}
+.select-btn:hover{
+  border-color: rgba(0,82,159,.35) !important;
+  box-shadow: 0 10px 0 rgba(0,82,159,.14) !important;
+}
+
+.caret{
+  background: var(--gold) !important;
+  color: var(--primary) !important;
+  box-shadow: 0 6px 0 rgba(253,185,19,.22);
+}
+.custom-select.open .caret{
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+/* Dropdown options */
+.option:hover{ background: rgba(219,234,254,.65) !important; color: var(--primary) !important; }
+.option.selected{
+  background: linear-gradient(90deg, rgba(253,185,19,.18), rgba(255,255,255,1)) !important;
+  color: var(--primary) !important;
+  border-left: 4px solid var(--gold) !important;
+}
+
+/* Editor focus ring */
+textarea.editor:focus{
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(0,82,159,.16) !important;
+}
+
+/* Copy button: biru-emas */
+.btn-copy{
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+  box-shadow: 0 10px 0 rgba(0,82,159,.18) !important;
+}
+.btn-copy:hover{
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 0 rgba(0,82,159,.22) !important;
+  filter: brightness(1.05) !important;
+}
+.btn-copy:active{ transform: translateY(1px) !important; }
+
+/* Toast */
+.tiny-toast-custom{
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark)) !important;
+}
+
+/* =========================
+   Overlay lock ikut tema
+   ========================= */
+#promoLockOverlay{
+  background:
+    radial-gradient(circle at 18% 22%, rgba(0,82,159,.20), transparent 42%),
+    radial-gradient(circle at 78% 28%, rgba(253,185,19,.16), transparent 48%),
+    radial-gradient(circle at 50% 105%, rgba(91,46,144,.14), transparent 40%),
+    linear-gradient(135deg, #ffffff 0%, #eef6ff 35%, #dbeafe 100%) !important;
+}
+
+#promoLockOverlay .lock-card{
+  border: 3px solid rgba(0,82,159,.22) !important;
+  box-shadow:
+    0 16px 0 rgba(0,82,159,.14),
+    0 22px 55px rgba(0,40,90,.22) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.58)) !important;
+}
+
+#promoLockOverlay .lock-card::before{
+  background: repeating-linear-gradient(
+    45deg,
+    #ffffff 0 12px,
+    var(--gold) 12px 24px,
+    var(--primary) 24px 36px
+  ) !important;
+  box-shadow: 0 10px 22px rgba(0,82,159,.12) !important;
+}
+
+#promoLockOverlay h2{ color: var(--primary) !important; text-shadow: 0 2px 0 rgba(253,185,19,.25) !important; }
+#promoLockOverlay p{ color: rgba(10,27,46,.82) !important; }
+#promoLockOverlay .badge{
+  border: 2px solid rgba(253,185,19,.55) !important;
+  background: linear-gradient(180deg, rgba(253,185,19,.22), rgba(255,255,255,.60)) !important;
+  color: #6b4a00 !important;
+}
+#promoLockOverlay .mini{ color: rgba(10,27,46,.78) !important; }
+
+</style>
+</head>
+<body>
+
+  <!-- =========================================================
+       TAMBAHAN: OVERLAY LOCK (MUNCUL DI LUAR TANGGAL PROMO)
+       ========================================================= -->
+  <div id="promoLockOverlay" aria-hidden="true">
+    <div class="lock-card">
+      <div style="font-size:2.2rem;line-height:1;">📬</div>
+      <h2>Halaman Format Sedang Ditutup</h2>
+      <p>Format ini hanya bisa dibuka pada periode:</p>
+      <div class="badge">25 Desember – 31 Desember 2025</div>
+      <p class="mini">Silakan kembali saat Promo Sudah dimulai✨</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <h1>Format Order <span class="flag">🎈</span></h1>
+      <div style="flex:1"></div>
+
+      <a href="st.html" class="brand-badge" aria-label="Kembali ke Pricelist">
+        <span aria-hidden="true">←</span>
+        <span>KEMBALI</span>
+      </a>
+    </header>
+
+    <div class="card" id="cardRoot">
+      <div class="top-row">
+        <div class="custom-select" id="customSelect" aria-haspopup="listbox">
+          <div class="select-btn" id="selectBtn" role="button" aria-expanded="false" tabindex="0">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:1.2rem"></span>
+              <div class="select-label" id="selectLabel">Pilih Template</div>
+            </div>
+            <div class="caret" id="caret">▼</div>
+          </div>
+
+          <div class="panel" id="panel" role="listbox" aria-label="Pilih template" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="editor-wrap">
+        <label for="editor" class="sr-only" style="display:none">Editor template</label>
+        <textarea id="editor" class="editor" spellcheck="false" aria-label="Editor template"></textarea>
+      </div>
+
+      <div class="bottom-bar">
+        <div class="hint">ℹ️ Edit teks di atas sebelum disalin.</div>
+        <button class="btn-copy" id="copyBtn">
+          <span>Salin Format</span>
+          <span>🎈</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Templates Data (Updated with Holiday Vibes if needed)
+    const DEFAULT_TEMPLATES = {
+      "jaseb-lpm": { id:"jaseb-lpm", title:"Jaseb LPM Satu Hari 📇", body:`*📇 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗝𝗔𝗦𝗘𝗕 𝗦𝗔𝗧𝗨 𝗛𝗔𝗥𝗜*\n━━━━━━━━━━━━━━━━━━━  *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ No Hp :\nⓘ Jumlah LPM :\nⓘ Secreenshot : pendek/panjang\nⓘ List Berfoto/Video : ( Kosongkan Jika tidak ) \nⓘ Deadline : ( Waktu Penyebaran Selesai )\nⓘ Total : Rp.\nKalkulator : https://kalkulatordiptarm.netlify.app\n\n*UP*. harga inrush menyesuaikan jumlah lpm\n*LANGSUNG KIRIM LIST + FORMAT*\nsebelum memesan jangan lupa membaca note\nkirim kesini : https://wa.me/6283849861232` },
+      "jaseb-simple": { id:"jaseb-simple", title:"Jaseb LPFP Satu Hari 🗞️", body:`*🗞️𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗝𝗔𝗦𝗘𝗕 𝗦𝗜𝗠𝗣𝗟𝗘*\n━━━━━━━━━━━━━━━━━━   *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ No Hp :\nⓘ Jumlah LPFP :\nⓘ Secreenshot : pendek/panjang\nⓘ Deadline : ( Waktu Penyebaran Selesai )\nⓘ Total : Rp. \nKalkulator : https://kalkulatordiptarm.netlify.app\n\n*UP*. harga inrush menyesuaikan jumlah lpm\nsebelum memesan jangan lupa membaca note\nkirim kesini : https://wa.me/6283849861232` },
+      "jaseb-slpfp": { id:"jaseb-slpfp", title:"Jaseb LPM Sesi 🃏", body:`️*🃏 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗝𝗔𝗦𝗘𝗕 + 𝗦𝗘𝗦𝗜*\n━━━━━━━━━━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ No Hp :\nⓘ Jumlah LPM :\nⓘ Secreenshot : pendek/panjang\nⓘ List Berfoto/Video : ( Kosongkan Jika tidak ) \nⓘ Jumlah Sesi : ( Sehari mau disebar berapa kali? )\nⓘ Jumlah Hari : ( Mau disebar berapa hari? )\nⓘ Penyebaran : Hari ini / Besok\nⓘ Sesi Penyebaran :\n     Sesi 1 : 00.00 \n     Sesi 2 : 00.00 \n     Sesi 3 : 00.00\n     dst..\nⓘ Total : Rp.\nKalkulator : https://kalkulatordiptarm.netlify.app\n\n*UP*. pastikan mengisi form dengan benar\n*LANGSUNG KIRIM LIST + FORMAT*\nsebelum memesan jangan lupa membaca note\nkirim kesini : https://wa.me/6283849861232` },
+      "jaseb-sesi-lpfp": { id:"jaseb-sesi-lpfp", title:"Jaseb LPFP Sesi 💈", body:`*💈 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗝𝗔𝗦𝗘𝗕 𝗦𝗘𝗦𝗜*\n━━━━━━━━━━━━━━━━  *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ No Hp :\nⓘ Jumlah LPFP :\nⓘ Secreenshot : pendek/panjang\nⓘ Jumlah Sesi : ( Sehari mau disebar berapa kali? )\nⓘ Jumlah Hari : ( Mau disebar berapa hari? )\nⓘ Penyebaran : Hari ini / Besok\nⓘ Sesi Penyebaran :\n     Sesi 1 : 00.00 \n     Sesi 2 : 00.00 \n     Sesi 3 : 00.00\n     dst.. \nⓘ Total : Rp.\nKalkulator : https://kalkulatordiptarm.netlify.app\n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nkirim kesini : https://wa.me/6283849861232` },
+      "jasduk": { id:"jasduk", title:"Jasduk React/ Snap 🧯", body:`*🧯 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗝𝗔𝗦𝗔 𝗗𝗨𝗞𝗨𝗡𝗚𝗔𝗡*\n━━━━━━━━━━━━━━━━━━━━   *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ Pilih 1 : React/ Snap WhatsApp\nⓘ Link : ( Kosongkan jika jasduk sw )\nⓘ Jumlah :\nⓘ *( Khusus React )* Emoji : 👍/❤️/🙏 ( Pilih 1 )\n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nKirim kesini : https://wa.me/6283849861232` },
+      "member-ch-wa": { id:"member-ch-wa", title:"Member CH WA 📟", body:`*📟 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗠𝗘𝗠𝗕𝗘𝗥 𝗖𝗛 𝗪𝗔*\n━━━━━━━━━━━━━━━━━━━   *𝗗𝗜𝗣𝗧𝗔𝗥𝗠*\nⓘ Link :\nⓘ Jumlah Pengikut :\n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nKirim kesini : https://wa.me/6283849861232` },
+"wording": {
+  id: "wording",
+  title: "Wording 🫦",
+  body: `*🫦 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗪𝗢𝗥𝗗𝗜𝗡𝗚*
+━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠 𝗦𝗧𝗢𝗥𝗘*
+ⓘ No Hp : 
+ⓘ Jenis Editan : ( Contoh, Bio )
+ⓘ Theme : ( Contoh, Elegant/Messy ) 
+ⓘ Bahasa : ( Contoh, English )
+ⓘ Character + Nickname : 
+ⓘ Size Wording : ( Short/ Medium/ Long )
+ⓘ Inrush : ya/tidak ( 12/24/48 Jam )
+ⓘ Request Lainnya : 
+
+*UP*. pastikan mengisi form dengan benar
+sebelum memesan jangan lupa membaca note
+Kirim kesini : https://wa.me/6283849861232`
+},
+      "moodboard": { id:"moodboard", title:"Moodboard 🧻", body:`*🧻𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗠𝗢𝗢𝗗𝗕𝗢𝗔𝗥𝗗*\n━━━━━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠 𝗦𝗧𝗢𝗥𝗘*\nⓘ Nomor Customer : \nⓘ Nickname : \nⓘ Muse : \nⓘ Type : Deco/Design/Basic ( Pilih 1 )\nⓘ Jumlah Slide : \nⓘ Tambahan Header : Ya/Tidak ( Jika tidak diisi artinya tidak )\nⓘ Theme : \nⓘ Req Colour : \nⓘ Inrush : ya/tidak *( 24 Jam / 72 Jam )*\nⓘ Request Lainnya : \n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nKirim kesini : https://wa.me/6283849861232` },
+      "editing": { id:"editing", title:"Editing 🎈", body:`*🎈𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗘𝗗𝗜𝗧𝗜𝗡𝗚*\n━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠 𝗦𝗧𝗢𝗥𝗘*\nⓘ Nomor Customer : \nⓘ Jenis Editan : ( Contoh, Poster )\nⓘ Jumlah : ( Contoh, Idc 2, Poster 1 ) \nⓘ Ukuran : \nⓘ Theme : ( Contoh, Mario Bross )\nⓘ Ofc Colour : \nⓘ Character : \nⓘ Teks Di Gambar : \nⓘ Inrush : ya/tidak *(24 jam/72 jam)* \nⓘ Request Lainnya : \n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nKirim kesini : https://wa.me/6283849861232` },
+      "robux": { id: "robuxtorder",  title: "Robux 🎮",  body: `*🎮 𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗥𝗢𝗕𝗨𝗫*\n━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠 𝗦𝗧𝗢𝗥𝗘*\nJumlah Order :\nUsername @ :\nPassword : ( only for robux vilog )\n4 Kode backup : ( only for robux vilog )\nSisa Robux :\n\n*Pastikan username sudah benar*\n*Kesalahan cust bukan tanggung jawab Admin*\n\nKirim kesini : https://wa.me/6283849861232`},
+      "setupacc": { id: "setupaccorder",  title: "Setup Account 📬",  body: `*📬𝅄 𝗙𝗢𝗥𝗠𝗔𝗧 𝗢𝗥𝗗𝗘𝗥 𝗦𝗘𝗧𝗨𝗣 𝗔𝗖𝗖*\n━━━━━━━━━━━ *𝗗𝗜𝗣𝗧𝗔𝗥𝗠 𝗦𝗧𝗢𝗥𝗘*\nⓘ No Hp :\nⓘ Paket : ( Contoh, Paket Degan 3 )\nⓘ Type : Basic / Design / Deco ( Pilih 1 )\nⓘ Theme : ( Contoh, Elegant/Messy )\nⓘ Bahasa : ( Untuk Wording )\nⓘ Character + Nickname :\nⓘ Req Colour :\nⓘ Inrush : ya/tidak\nⓘ Request Lainnya :\n\n*UP*. pastikan mengisi form dengan benar\nsebelum memesan jangan lupa membaca note\nKirim kesini : https://wa.me/6283849861232`}
+    };
+
+    const STORAGE_KEY = 'diptarm_simple_v2';
+
+    function loadTemplates(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+        const parsed = JSON.parse(raw);
+        return {...JSON.parse(JSON.stringify(DEFAULT_TEMPLATES)), ...parsed};
+      }catch(e){
+        return JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+      }
+    }
+    function saveTemplates(obj){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); }catch(e){} }
+
+    // DOM refs
+    const panel = document.getElementById('panel');
+    const selectBtn = document.getElementById('selectBtn');
+    const selectLabel = document.getElementById('selectLabel');
+    const editor = document.getElementById('editor');
+    const copyBtn = document.getElementById('copyBtn');
+    const customSelect = document.getElementById('customSelect');
+
+    let templates = loadTemplates();
+    let ids = Object.keys(templates);
+    let currentId = ids[0] || 'jaseb-simple';
+
+    function renderOptions(){
+      panel.innerHTML = '';
+      ids = Object.keys(templates);
+      ids.forEach(id => {
+        const opt = document.createElement('div');
+        opt.className = 'option';
+        opt.setAttribute('data-id', id);
+        opt.setAttribute('role','option');
+        opt.tabIndex = 0;
+        opt.innerHTML = `<div class="title">${templates[id].title}</div>`;
+        panel.appendChild(opt);
+
+        opt.addEventListener('click', ()=> selectTemplate(id));
+      });
+      highlightSelectedOption();
+    }
+
+    function selectTemplate(id){
+      if(!id || !templates[id]) return;
+      currentId = id;
+      selectLabel.textContent = templates[id].title;
+      editor.value = templates[id].body || '';
+      highlightSelectedOption();
+      closePanel();
+      flashCard();
+      // setTimeout(()=> editor.focus(), 120); // Disabled auto focus on select to prevent keyboard popup on mobile
+    }
+
+    // initial render
+    renderOptions();
+
+    function loadCurrent(){
+      if(!templates[currentId]) currentId = Object.keys(templates)[0];
+      selectLabel.textContent = templates[currentId].title;
+      editor.value = templates[currentId].body || '';
+      highlightSelectedOption();
+    }
+    loadCurrent();
+
+    function openPanel(){
+      panel.classList.add('open');
+      customSelect.classList.add('open');
+      selectBtn.setAttribute('aria-expanded','true');
+    }
+    function closePanel(){
+      panel.classList.remove('open');
+      customSelect.classList.remove('open');
+      selectBtn.setAttribute('aria-expanded','false');
+    }
+
+    let panelOpen = false;
+    selectBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      panelOpen = panel.classList.contains('open');
+      panelOpen ? (closePanel(), panelOpen=false) : (openPanel(), panelOpen=true);
+    });
+
+    document.addEventListener('click', (e)=>{
+      const target = e.target;
+      if(panel.classList.contains('open') && !panel.contains(target) && !selectBtn.contains(target)){
+        closePanel();
+      }
+    });
+
+    function highlightSelectedOption(){
+      panel.querySelectorAll('.option').forEach(opt=>{
+        opt.classList.toggle('selected', opt.getAttribute('data-id') === currentId);
+      });
+    }
+
+    // autosave editor
+    let tmr;
+    editor.addEventListener('input', ()=>{
+      clearTimeout(tmr);
+      tmr = setTimeout(()=>{
+        templates[currentId].body = editor.value;
+        saveTemplates(templates);
+      },550);
+    });
+
+    // copy
+    copyBtn.addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(editor.value);
+        tinyToast('Disalin ke clipboard! 🎄');
+      }catch(e){
+        const ta = document.createElement('textarea'); ta.value = editor.value; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); tinyToast('Disalin ke clipboard! 🎄'); }catch(err){ tinyToast('Gagal menyalin'); }
+        ta.remove();
+      }
+    });
+
+    function tinyToast(msg){
+      const el = document.createElement('div'); el.textContent = msg;
+      el.className = 'tiny-toast-custom';
+      Object.assign(el.style,{position:'fixed',right:'18px',bottom:'18px',color:'#fff',padding:'12px 18px',borderRadius:'99px',zIndex:9999, fontSize:'0.85rem'});
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(),1500);
+    }
+
+    function flashCard(){
+      const card = document.getElementById('cardRoot');
+      card.style.transition = 'transform .2s ease';
+      card.style.transform = 'scale(0.99)';
+      setTimeout(()=>{ card.style.transform='scale(1)'; },200);
+    }
+
+    window.addEventListener('resize', ()=>{ closePanel(); });
+    window.addEventListener('beforeunload', ()=> saveTemplates(templates));
+  </script>
+
+  <!-- =========================================================
+       TAMBAHAN: SCRIPT KUNCI TANGGAL (WIB) 25–31 DES 2025
+       - Di luar rentang: sembunyikan .wrap + tampilkan overlay
+       ========================================================= -->
+  <script>
+    (function promoDateLockWIB(){
+      // WIB = UTC+7, bandingkan dengan UTC agar konsisten (tidak tergantung timezone server/device).
+      // Rentang aktif: 25 Des 2025 00:00 WIB s/d 31 Des 2025 23:59:59 WIB
+      const startUTC = Date.UTC(2025, 11, 24, 17, 0, 0);   // 25 Des 00:00 WIB
+      const endUTC   = Date.UTC(2028, 11, 31, 16, 59, 59); // 31 Des 23:59:59 WIB
+      const nowUTC = Date.now();
+
+      const inRange = (nowUTC >= startUTC && nowUTC <= endUTC);
+
+      const wrap = document.querySelector('.wrap');
+      const overlay = document.getElementById('promoLockOverlay');
+
+      if(!inRange){
+        if(wrap) wrap.style.display = 'none';
+        if(overlay){
+          overlay.style.display = 'flex';
+          overlay.setAttribute('aria-hidden', 'false');
+        }
+      } else {
+        if(wrap) wrap.style.display = '';
+        if(overlay){
+          overlay.style.display = 'none';
+          overlay.setAttribute('aria-hidden', 'true');
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricelist DiptARM — Real Madrid 2D</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================
+      REAL MADRID 2D CARTOON THEME
+      ========================= */
+    html { font-size: 12px; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", sans-serif;
+      color: #0b2a6f;
+      padding: 18px 16px 28px;
+      overflow-x: hidden;
+
+      background:
+        radial-gradient(circle at 15% 18%, rgba(212,175,55,.22), transparent 45%),
+        radial-gradient(circle at 85% 22%, rgba(29,78,216,.16), transparent 44%),
+        radial-gradient(circle at 55% 110%, rgba(109,40,217,.12), transparent 48%),
+        linear-gradient(135deg, #ffffff 0%, #f2f6ff 50%, #ffffff 100%);
+    }
+
+    /* halftone dots overlay */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image: radial-gradient(circle, rgba(11,42,111,.22) 1px, transparent 2px);
+      background-size: 18px 18px;
+      mix-blend-mode: multiply;
+    }
+
+    :root{
+      --rm-blue:#0b2a6f;
+      --rm-blue2:#1d4ed8;
+      --rm-gold:#d4af37;
+      --rm-gold2:#f5d26a;
+      --rm-ice:#f6f8ff;
+      --rm-white:#ffffff;
+
+      --ink: rgba(11,42,111,.22);
+      --stroke: rgba(11,42,111,.18);
+      --shadow: rgba(11,42,111,.14);
+      --muted: rgba(11,42,111,.70);
+
+      --card-radius: 22px;
+    }
+
+    @keyframes fadeIn { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:none;} }
+    @keyframes floaty { 0%,100%{transform:translateY(0) rotate(-1.5deg)} 50%{transform:translateY(10px) rotate(1.5deg)} }
+
+    /* Header */
+    .header-wrap{
+      max-width: 780px;
+      margin: 0 auto 18px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn .7s ease;
+    }
+
+    .header-bar{
+      position: relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      padding: 16px 14px 14px;
+      background: linear-gradient(180deg, #fff, var(--rm-ice));
+      border-radius: 18px;
+      border: 2px solid var(--ink);
+      box-shadow: 0 14px 38px var(--shadow);
+      overflow: hidden;
+    }
+
+    /* jersey stripe */
+    .header-bar::before{
+      content:"";
+      position:absolute;
+      top:0; left:0; right:0;
+      height:10px;
+      background:
+        linear-gradient(90deg, var(--rm-gold) 0 22%, transparent 22% 78%, var(--rm-gold) 78% 100%),
+        linear-gradient(90deg, var(--rm-blue) 0 100%);
+      opacity:.95;
+    }
+
+    h1{
+      margin: 8px 0 0;
+      font-family: "Outfit", sans-serif;
+      font-weight: 900;
+      font-size: 2.0rem;
+      letter-spacing: .2px;
+      color: var(--rm-blue);
+      text-shadow: 0 2px 0 rgba(255,255,255,.7);
+    }
+
+    .subtitle{
+      margin: 10px auto 0;
+      width: fit-content;
+      text-align:center;
+      font-weight: 800;
+      font-size: .78rem;
+      color: var(--rm-blue);
+      background: rgba(212,175,55,.12);
+      border: 2px solid rgba(11,42,111,.18);
+      border-radius: 999px;
+      padding: 7px 14px;
+      box-shadow: 0 10px 18px rgba(11,42,111,.10);
+    }
+
+    /* QRIS button */
+    .qris-btn{
+      position:absolute;
+      top: 10px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      background: linear-gradient(180deg, #fff, var(--rm-ice));
+      border: 2px solid var(--ink);
+      box-shadow: 0 10px 16px rgba(11,42,111,.10);
+      transition: transform .15s ease;
+    }
+    .qris-btn:hover{ transform: translateY(-2px) rotate(6deg); }
+    .qris-icon{ width: 22px; height: 22px; object-fit: contain; display:block; }
+
+    /* Mascot */
+    .mascot{
+      position: fixed;
+      right: 16px;
+      top: 130px;
+      width: 92px;
+      height: 92px;
+      border-radius: 24px;
+      z-index: 2;
+      pointer-events: none;
+      filter: drop-shadow(0 12px 18px rgba(11,42,111,.16));
+      animation: floaty 3.2s ease-in-out infinite;
+    }
+    @media (max-width: 720px){
+      .mascot{ display:none; }
+    }
+
+    /* Tabs */
+    .tabs{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      margin: 16px auto 18px;
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+    }
+    .tab{
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--ink);
+      background: rgba(255,255,255,.72);
+      color: var(--rm-blue);
+      font-weight: 900;
+      font-family: "Outfit", sans-serif;
+      cursor: pointer;
+      font-size: .78rem;
+      box-shadow: 0 10px 18px rgba(11,42,111,.08);
+      transition: transform .12s ease, filter .12s ease, background .12s ease;
+    }
+    .tab:hover{
+      transform: translateY(-2px);
+      filter: saturate(1.05);
+      background: rgba(245,210,106,.22);
+    }
+    .tab.active{
+      background: linear-gradient(135deg, var(--rm-blue2), var(--rm-blue));
+      color: #fff;
+      border-color: rgba(255,255,255,.35);
+      box-shadow: 0 14px 26px rgba(29,78,216,.18);
+    }
+
+    /* Content containers */
+    .container { display:grid; grid-template-columns: minmax(0,1fr); }
+    .category { display:none; }
+    .category.active { display:grid; }
+
+    .pricelist-container{
+      max-width: 720px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #fff, var(--rm-ice));
+      border-radius: var(--card-radius);
+      border: 2px solid var(--ink);
+      box-shadow: 0 18px 60px var(--shadow);
+      padding: 24px 18px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn .55s ease;
+    }
+
+    /* corner sparkle */
+    .pricelist-container::after{
+      content:"👑⚽";
+      position:absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 1.6rem;
+      opacity: .25;
+      pointer-events:none;
+    }
+
+    .section-title1, .section-title2{
+      width: fit-content;
+      margin: 6px auto 16px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: .9rem;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      font-family: "Outfit", sans-serif;
+      border: 2px solid rgba(255,255,255,.45);
+      outline: 3px solid rgba(11,42,111,.18);
+      box-shadow: 0 10px 18px rgba(11,42,111,.10);
+      text-align:center;
+    }
+    .section-title1{
+      background: linear-gradient(90deg, var(--rm-blue), var(--rm-blue2));
+      color: #fff;
+    }
+    .section-title2{
+      background: linear-gradient(90deg, var(--rm-gold), var(--rm-gold2));
+      color: var(--rm-blue);
+      outline-color: rgba(212,175,55,.25);
+    }
+
+    .hint{
+      text-align:center;
+      margin: 6px 0 14px;
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 10px;
+      font-size: 11px;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 2px solid rgba(11,42,111,.14);
+      background: rgba(255,255,255,.7);
+    }
+    thead th{
+      background: linear-gradient(90deg, rgba(11,42,111,.92), rgba(29,78,216,.92));
+      color: #fff;
+      font-weight: 900;
+      padding: 12px 10px;
+      text-align:center;
+      font-size: .86rem;
+      font-family: "Outfit", sans-serif;
+      letter-spacing: .3px;
+    }
+    td, th{
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(11,42,111,.10);
+      text-align:center;
+    }
+    tbody tr:nth-child(even){ background: rgba(29,78,216,.04); }
+    tbody tr:hover{ background: rgba(245,210,106,.18); transition: .12s; }
+
+    tbody tr:last-child td{ border-bottom: none; }
+
+    .price{
+      font-weight: 900;
+      font-family: "Outfit", sans-serif;
+      color: var(--rm-blue);
+      font-size: 1.05em;
+    }
+
+    .note{
+      margin-top: 18px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      background: rgba(212,175,55,.12);
+      border: 2px dashed rgba(11,42,111,.20);
+      color: var(--rm-blue);
+      font-size: 9px;
+      line-height: 1.7;
+      box-shadow: 0 10px 18px rgba(11,42,111,.08);
+    }
+    .note strong{ font-family:"Outfit",sans-serif; }
+
+    .button-wrapper{
+      display:flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .order-btn{
+      flex: 1;
+      min-width: 140px;
+      border: none;
+      cursor: pointer;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 900;
+      font-size: .95rem;
+      color: #fff;
+      background: linear-gradient(135deg, var(--rm-blue2), var(--rm-blue));
+      border: 2px solid rgba(255,255,255,.35);
+      box-shadow: 0 14px 26px rgba(29,78,216,.16);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .order-btn.alt{
+      color: var(--rm-blue);
+      background: linear-gradient(135deg, var(--rm-gold2), var(--rm-gold));
+      border: 2px solid rgba(11,42,111,.14);
+      box-shadow: 0 14px 26px rgba(212,175,55,.18);
+    }
+    .order-btn:hover{ transform: translateY(-2px); filter: saturate(1.05); }
+    .order-btn:active{ transform: translateY(0); }
+
+    footer{
+      text-align:center;
+      margin-top: 22px;
+      font-size: .8rem;
+      color: rgba(11,42,111,.75);
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 420px){
+      body{ padding: 14px 12px 24px; }
+      table{ font-size: 9.5px; }
+      td, th{ padding: 10px 8px; }
+      h1{ font-size: 1.75rem; }
+      .pricelist-container{ padding: 18px 14px; }
+      .section-title1, .section-title2{ font-size: .82rem; padding: 9px 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mascot: crown + ball -->
+  <svg class="mascot" viewBox="0 0 120 120" aria-hidden="true">
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1">
+        <stop offset="0" stop-color="#f5d26a"/>
+        <stop offset="1" stop-color="#d4af37"/>
+      </linearGradient>
+      <linearGradient id="g2" x1="0" x2="1">
+        <stop offset="0" stop-color="#1d4ed8"/>
+        <stop offset="1" stop-color="#0b2a6f"/>
+      </linearGradient>
+    </defs>
+    <rect x="8" y="8" width="104" height="104" rx="26" fill="#ffffff" stroke="rgba(11,42,111,.35)" stroke-width="4"/>
+    <path d="M26 46 L40 34 L52 46 L60 30 L68 46 L80 34 L94 46 L90 58 H30 Z"
+          fill="url(#g1)" stroke="rgba(11,42,111,.45)" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="40" cy="34" r="5" fill="#fff" stroke="rgba(11,42,111,.35)" stroke-width="3"/>
+    <circle cx="60" cy="30" r="5" fill="#fff" stroke="rgba(11,42,111,.35)" stroke-width="3"/>
+    <circle cx="80" cy="34" r="5" fill="#fff" stroke="rgba(11,42,111,.35)" stroke-width="3"/>
+    <circle cx="60" cy="78" r="24" fill="url(#g2)" stroke="rgba(11,42,111,.45)" stroke-width="4"/>
+    <path d="M45 68 L60 61 L75 68 L70 85 L50 85 Z" fill="#fff" opacity=".95"/>
+    <path d="M60 61 V102" stroke="rgba(255,255,255,.7)" stroke-width="3" opacity=".7"/>
+  </svg>
+
+  <div class="header-wrap">
+    <div class="header-bar">
+      <a href="https://whatsapp.com/channel/0029VbBYIXSGpLHMjxkI631E" class="qris-btn" title="Bayar via QRIS">
+        <img src="testi/qr.png" alt="QRIS" class="qris-icon" />
+      </a>
+      <h1>DiptARM StoRE</h1>
+    </div>
+    <p class="subtitle">Author Diptarm Adipati P. Arm</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-target="jaseb" role="tab" aria-selected="true">JASEB</button>
+    <button class="tab" data-target="robux" role="tab">ROBUX</button>
+    <button class="tab" data-target="reacted" role="tab">JASDUK/ VOTE</button>
+    <button class="tab" data-target="edit" role="tab">EDIT</button>
+    <button class="tab" data-target="mb" role="tab">MB</button>
+    <button class="tab" data-target="setup" role="tab">SETUP ACC</button>
+    <button class="tab" data-target="memb" role="tab">MEMBER CH</button>
+    <button class="tab" data-target="app" role="tab">APP PREM</button>
+    <button class="tab" data-target="wor" role="tab">WORDING</button>
+  </div>
+
+  <!-- =========================
+       JASEB
+       ========================= -->
+  <div id="jaseb" class="container category active">
+    <div class="pricelist-container">
+      <div class="section-title1">JASA SEBAR LIST</div>
+      <p class="hint">Jasa Sebar List, berlaku sampai kelipatan 10K LPM/Hari.</p>
+
+      <table>
+        <thead>
+          <tr><th colspan="2">JASEB LPM</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>50 LPM</td><td class="price">Rp 100</td></tr>
+          <tr><td>100 LPM</td><td class="price">Rp 200</td></tr>
+          <tr><td>200 LPM</td><td class="price">Rp 400</td></tr>
+          <tr><td>300 LPM</td><td class="price">Rp 600</td></tr>
+          <tr><td>400 LPM</td><td class="price">Rp 800</td></tr>
+          <tr><td>500 LPM</td><td class="price">Rp 1.000</td></tr>
+          <tr><td>1.000 LPM</td><td class="price">Rp 2.000</td></tr>
+          <tr><td>5.000 LPM</td><td class="price">Rp 10.000</td></tr>
+          <tr><td>10.000 LPM</td><td class="price">Rp 20.000</td></tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:14px;">
+        <thead>
+          <tr><th colspan="2">JASEB LPFP</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>50 LPFP</td><td class="price">Rp 150</td></tr>
+          <tr><td>100 LPFP</td><td class="price">Rp 300</td></tr>
+          <tr><td>200 LPFP</td><td class="price">Rp 600</td></tr>
+          <tr><td>300 LPFP</td><td class="price">Rp 900</td></tr>
+          <tr><td>400 LPFP</td><td class="price">Rp 1.200</td></tr>
+          <tr><td>500 LPFP</td><td class="price">Rp 1.500</td></tr>
+          <tr><td>5.000 LPFP</td><td class="price">Rp 15.000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        Banned List 18+, Bisnis RL &amp; Judol<br>
+        List berfoto fee + <strong>100P</strong> per penyebaran / Kelipatan 500 LPM.<br>
+        List bervideo fee + <strong>200P</strong> per penyebaran / Kelipatan 500 LPM.<br>
+        Harga rush menyesuaikan jumlah LPM range 200 – 2K.<br>
+        Penyebaran maksimal 10 sesi dan 30 hari.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://kalkulatordiptarm.netlify.app'">Kalkulator</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       JASDUK
+       ========================= -->
+  <div id="reacted" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title2">JASA DUKUNGAN/ VOTE WEB</div>
+      <p class="hint">Hanya menerima react dengan emoji Default.</p>
+
+      <table>
+        <thead>
+          <tr><th colspan="2">JASDUK POST REACTED CH WA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>+ 10 React</td><td class="price">Rp 300</td></tr>
+          <tr><td>+ 50 React</td><td class="price">Rp 1.500</td></tr>
+          <tr><td>+ 100 React</td><td class="price">Rp 3.000</td></tr>
+          <tr><td>+ 200 React</td><td class="price">Rp 6.000</td></tr>
+          <tr><td>+ 300 React</td><td class="price">Rp 9.000</td></tr>
+          <tr><td>+ 500 React</td><td class="price">Rp 15.000</td></tr>
+          <tr><td>+ 1.000 React</td><td class="price">Rp 30.000</td></tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:14px;">
+        <thead>
+          <tr><th colspan="2">JASDUK POST POSTER SW</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>5 Dukungan</td><td class="price">Rp 750</td></tr>
+          <tr><td>10 Dukungan</td><td class="price">Rp 1.500</td></tr>
+          <tr><td>20 Dukungan</td><td class="price">Rp 3.000</td></tr>
+          <tr><td>40 Dukungan</td><td class="price">Rp 6.000</td></tr>
+        </tbody>
+      </table>
+      
+            <table style="margin-top:14px;">
+        <thead>
+          <tr><th colspan="2">JASDUK VOTE VIA WEB</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1 Vote</td><td class="price">Rp 100</td></tr>
+          <tr><td>5 Vote</td><td class="price">Rp 500</td></tr>
+          <tr><td>10 Vote</td><td class="price">Rp 1.000</td></tr>
+          <tr><td>20 Vote</td><td class="price">Rp 2.000</td></tr>
+          <tr><td>50 Vote</td><td class="price">Rp 5.000</td></tr>
+          <tr><td>100 Vote</td><td class="price">Rp 10.000</td></tr>          
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        ( React ) Maksimal Order 10K Pengikut.<br>
+        ( React ) Waktu Pengerjaan 10 Menit setiap 1 Emoji / Tergantung sistem.<br>
+        ( React ) Emoji default: 😂 / 🙏 / ❤️ / 👍.<br>
+        ( Post SW ) Tidak bisa Rush.<br>
+        ( Vote ) 1 Vote berlaku untuk 1 Pilihan atau 1 Nomor.
+        ( Vote ) Vote Google Form hanya berlaku untuk 10 Akun.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://whatsapp.com/channel/0029Vb6sHbp1nozEpB074I0W'">Menu Lain</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       MEMB CH
+       ========================= -->
+  <div id="memb" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title1">+ PENGIKUT CHANNEL WA</div>
+      <p class="hint">Channel WhatsApp Member — Refill 30 hari.</p>
+
+      <table>
+        <thead>
+          <tr><th colspan="2">HARGA MEMBER</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>+ 10 Subs</td><td class="price">Rp 800</td></tr>
+          <tr><td>+ 20 Subs</td><td class="price">Rp 1.600</td></tr>
+          <tr><td>+ 50 Subs</td><td class="price">Rp 4.000</td></tr>
+          <tr><td>+ 100 Subs</td><td class="price">Rp 8.000</td></tr>
+          <tr><td>+ 200 Subs</td><td class="price">Rp 16.000</td></tr>
+          <tr><td>+ 300 Subs</td><td class="price">Rp 24.600</td></tr>
+          <tr><td>+ 500 Subs</td><td class="price">Rp 40.000</td></tr>
+          <tr><td>+ 1.000 Subs</td><td class="price">Rp 80.000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        Maksimal Order 10K Pengikut.<br>
+        Waktu Pengerjaan <strong>10 menit</strong> atau tergantung sistem.<br>
+        Pengikut bersifat tidak Permanen.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://whatsapp.com/channel/0029Vb6sHbp1nozEpB074I0W'">Menu Lain</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       APP PREMIUM (NO STRIKETHROUGH)
+       ========================= -->
+  <div id="app" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title2">APLIKASI PREMIUM</div>
+      <p class="hint">APK Prem Ready DiptARM, aplikasi lain langsung tanyakan.</p>
+
+      <table>
+        <thead>
+          <tr><th colspan="2">LIST APLIKASI</th></tr>
+        </thead>
+        <tbody>
+<tr><td>Canva 1B Pro</td><td class="price">Rp 400</td></tr>
+<tr><td>Canva 1B Owner (Invite 100 Member)</td><td class="price">Rp 5.000</td></tr>
+<tr><td>Canva Education Lifetime</td><td class="price">Rp 5.000</td></tr>
+
+<tr><td>Bstation 1 Bulan</td><td class="price">Rp 4.000</td></tr>
+
+<tr><td>CapCut 7 Hari</td><td class="price">Rp 1.000</td></tr>
+<tr><td>CapCut 1 Bulan</td><td class="price">Rp 4.000</td></tr>
+
+<tr><td>Alight Motion 1 Tahun</td><td class="price">Rp 200</td></tr>
+
+<tr><td>Spotify 1 Bulan Android</td><td class="price">Rp 15.000</td></tr>
+
+<tr><td>ChatGPT 1 Bulan Sharing</td><td class="price">Rp 5.000</td></tr>
+<tr><td>ChatGPT 1 Bulan Private Nogar</td><td class="price">Rp 17.000</td></tr>
+
+<tr><td>IQIYI Standar 1 Bulan</td><td class="price">Rp 5.000</td></tr>
+
+<tr><td>Remini Web 7 Hari</td><td class="price">Rp 1.000</td></tr>
+
+<tr><td>Prime Video 1 Bulan (4 User)</td><td class="price">Rp 4.000</td></tr>
+
+<tr><td>Vidio TV 12 Bulan</td><td class="price">Rp 2.000</td></tr>
+
+<tr><td>Wibuku Sharing 1 Bulan</td><td class="price">Rp 5.000</td></tr>
+
+<tr><td>Viu 1 Bulan</td><td class="price">Rp 500</td></tr>
+<tr><td>Viu 3 Bulan</td><td class="price">Rp 1.000</td></tr>
+<tr><td>Viu Lifetime</td><td class="price">Rp 5.000</td></tr>
+
+<tr><td>WeTV 1 Bulan (8 User)</td><td class="price">Rp 6.000</td></tr>        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        Aplikasi lain langsung tanyakan saja.<br>
+        Semua layanan bergaransi sesuai ketentuan store.<br>
+        Wajib tanya stok sebelum order.<br>
+        Pastikan join store sebelum order.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn alt" onclick="location.href='https://chat.whatsapp.com/IguG47OqNlC4IgKBryCMkM'">Join Group</button>
+        <button class="order-btn" onclick="location.href='https://wa.me/6283849861232'">Contact Order</button>
+      </div>
+    </div>
+  </div>
+<!-- =========================
+     WORDING PRICELIST
+     ========================= -->
+<div id="wor" class="container category">
+  <div class="pricelist-container">
+
+    <div class="section-title2">
+      ✒ WORDING
+    </div>
+
+    <p class="hint">
+Jasa Pembuatan Wording, Open Custom selain di list.   </p>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING PACK</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="2"><strong>Avail :</strong> display name, biography, location, fake instagram</td></tr>
+
+        <tr><td><strong>WORDING PACK – Short</strong></td><td class="price">Rp 6.000</td></tr>
+        <tr><td><strong>WORDING PACK – Medium</strong></td><td class="price">Rp 8.000</td></tr>
+        <tr><td><strong>WORDING PACK – Long</strong></td><td class="price">Rp 13.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING BIO</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 3.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 7.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING PFP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 4.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 7.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING LOCATION</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 1.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 2.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 3.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING DISPLAY NAME</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 500</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 1.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 2.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING TITLE KATALOG ( /1 )</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 1.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 1.500</td></tr>
+        <tr><td>Long</td><td class="price">Rp 2.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING LIST GROUP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 6.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 8.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 10.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING BIRTHDAY</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Medium</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 8.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING UP-CHR</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Short</td><td class="price">Rp 4.000</td></tr>
+        <tr><td>Medium</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 6.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING LIST HASTAG</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Medium</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 7.000</td></tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr><th colspan="2">WORDING DESK GRUP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Medium</td><td class="price">Rp 7.000</td></tr>
+        <tr><td>Long</td><td class="price">Rp 10.000</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>NOTE – READ THIS BEFORE ORDER !!</strong><br>
+      ( Inrush ) 12 Jam = 5K / 24 Jam = 3K / 3 Hari = 1K<br>
+      Inrush dibawah 24 Jam berlaku untuk 1–2 Wd<br>
+      Pengerjaan maksimal 6 hari & revisi maksimal 2x<br>
+      Bisa request wording lain, langsung tanyakan
+    </div>
+
+    <div class="button-wrapper">
+        <button class="order-btn alt" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn" onclick="location.href='https://t.me/testimonidiptarm'">Result</button>
+      </button>
+    </div>
+
+  </div>
+</div>
+  <!-- =========================
+       ROBUX (NO STRIKETHROUGH)
+       ========================= -->
+  <div id="robux" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title2" style="text-align:center;">ROBUX GAMEPASS</div>
+      <img src="robux.jpg" alt="Robux" style="width:100%;border-radius:16px;margin-bottom:16px;border:2px solid rgba(11,42,111,.14); box-shadow: 0 10px 18px rgba(11,42,111,.10);">
+
+      <div class="section-title2">ROBUX VILOG</div>
+      <table>
+        <thead>
+          <tr><th colspan="2">LIST HARGA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>80 Robux</td><td class="price">Rp. 15.500</td></tr>
+          <tr><td>160 Robux</td><td class="price">Rp. 31.000</td></tr>
+          <tr><td>240 Robux</td><td class="price">Rp. 46.000</td></tr>
+          <tr><td>320 Robux</td><td class="price">Rp. 62.000</td></tr>
+          <tr><td>400 Robux</td><td class="price">Rp. 73.000</td></tr>
+          <tr><td>500 Robux</td><td class="price">Rp. 84.000</td></tr>
+          <tr><td>820 Robux</td><td class="price">Rp. 140.000</td></tr>
+          <tr><td>1000 Robux</td><td class="price">Rp. 160.000</td></tr>
+          <tr><td>1500 Robux</td><td class="price">Rp. 240.000</td></tr>
+          <tr><td>4500 Robux</td><td class="price">Rp. 700.000</td></tr>
+          <tr><td>10000 Robux</td><td class="price">Rp. 1.500.000</td></tr>
+        </tbody>
+      </table>
+
+      <p class="hint" style="margin-top:12px;">⚡ Proses cepat 1–10 menit (maks. 24 jam).</p>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        • Gamepass sudah tercantum di gambar di atas.<br>
+        • Vilog Robux dikirim otomatis dalam 10 menit - 24 jam.<br>
+        • Wajib bayar fee tambahan Rp 100 per transaksi / di atas 100K fee 1%.<br>
+        • Pastikan username/password Roblox benar sebelum order.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://whatsapp.com/channel/0029VbBVjEZBFLgcIVDDBM3Z'">Game Lain</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       EDIT
+       ========================= -->
+<div id="edit" class="container category">
+  <div class="pricelist-container">
+    <div class="section-title1">EDITING / MANIPS</div>
+    <p class="hint">
+      Open Jasa Edit <strong>Setup Group</strong> Editan Cakep.<br>
+    </p>
+
+    <table>
+      <thead><tr><th colspan="2">EDITING GROUP</th></tr></thead>
+      <tbody>
+        <tr><td>Profile</td><td class="price">Rp 5.500 - 7.000</td></tr>
+        <tr><td>Katalog</td><td class="price">Rp 4.500 - 6.500 /slide</td></tr>
+        <tr><td>Sertifikat</td><td class="price">Rp 5.000 - 7.000</td></tr>
+        <tr><td>Poster</td><td class="price">Rp 7.500 - 12.000</td></tr>
+        <tr><td>ID Card</td><td class="price">Rp 5.500 - 8.000</td></tr>
+      </tbody>
+    </table>
+
+    <table style="margin-top:14px;">
+      <thead><tr><th colspan="2">EDITING SET</th></tr></thead>
+      <tbody>
+        <tr><td>Twibbon B’day</td><td class="price">Rp 5.500 - 7.000</td></tr>
+        <tr><td>Ava</td><td class="price">Rp 5.500 - 7.000</td></tr>
+        <tr><td>Yearbook</td><td class="price">Rp 7.500 - 13.000</td></tr>
+      </tbody>
+    </table>
+
+    <table style="margin-top:14px;">
+      <thead><tr><th colspan="2">MANIPS</th></tr></thead>
+      <tbody>
+        <tr><td>Selca</td><td class="price">Rp 5.000</td></tr>
+        <tr><td>Half Body</td><td class="price">Rp 7.000</td></tr>
+        <tr><td>Full Body</td><td class="price">Rp 9.000</td></tr>
+      </tbody>
+    </table>
+
+    <table style="margin-top:14px;">
+      <thead><tr><th colspan="2">SCRIBBLE</th></tr></thead>
+      <tbody>
+        <tr><td>Kissed By</td><td class="price">Rp 2.000</td></tr>
+        <tr><td>Half Scribble</td><td class="price">Rp 7.000</td></tr>
+        <tr><td>Full Scribble</td><td class="price">Rp 9.000</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>NOTE: READ THIS BEFORE ORDER !!</strong><br>
+      • (Inrush) 24 Jam: +Rp 5.000 &amp; 3 Hari: +Rp 2.000<br>
+      • Inrush 24 jam hanya untuk 1 sampai 2 editan<br>
+      • Pengerjaan maksimal 6 hari (tergantung antrian)<br>
+      • Revisi max 3 kali, lebih dari itu ada fee tambahan<br>
+      • Dilarang mengganti muse/design saat orderan diproses<br>
+      • Poster maksimal 3 muse, lebih +Rp 1.000 /muse<br>
+      • Yearbook maksimal 5 muse, lebih +Rp 1.000 /muse
+    </div>
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://pin.it/L3oaVW0Ap'">Result</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       SETUP ACC
+       ========================= -->
+  <div id="setup" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title2">SET ACCOUNT ( MB + WD )</div>
+      <p class="hint">Open order jasa setup account.</p>
+
+      <table>
+        <thead><tr><th colspan="2">PAKET ASIK ( BASIC )</th></tr></thead>
+        <tbody>
+          <tr><td>Paket Asik 1<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio short</small></td><td class="price">Rp. 7.000</td></tr>
+          <tr><td>Paket Asik 2<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio, loc med</small></td><td class="price">Rp. 8.000</td></tr>
+          <tr><td>Paket Asik 3<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio, loc long</small></td><td class="price">Rp. 12.000</td></tr>
+          <tr><td>Paket Asik 4<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio short</small></td><td class="price">Rp. 15.000</td></tr>
+          <tr><td>Paket Asik 5<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio, loc med</small></td><td class="price">Rp. 18.000</td></tr>
+          <tr><td>Paket Asik 6<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio, loc long</small></td><td class="price">Rp. 20.000</td></tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:14px;">
+        <thead><tr><th colspan="2">PAKET DEGAN ( DECO / DESIGN )</th></tr></thead>
+        <tbody>
+          <tr><td>Paket Degan 1<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio, loc short, fake instagram</small></td><td class="price">Rp. 24.000</td></tr>
+          <tr><td>Paket Degan 2<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio, loc med, 3's title katalog, fake instagram/gmail</small></td><td class="price">Rp. 27.000</td></tr>
+          <tr><td>Paket Degan 3<br><small style="opacity:.75;font-weight:700;">MB 3S + Header + dn, bio, loc long, 3's title katalog, fake insta/gmail, bc kontak</small></td><td class="price">Rp. 31.000</td></tr>
+          <tr><td>Paket Degan 4<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio, loc, pfp short, 6's title katalog, fake insta/gmail, bc kontak</small></td><td class="price">Rp. 40.000</td></tr>
+          <tr><td>Paket Degan 5<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio, loc, pfp med, 6's title katalog, fake insta/gmail, bc kontak</small></td><td class="price">Rp. 44.0000</td></tr>
+          <tr><td>Paket Degan 6<br><small style="opacity:.75;font-weight:700;">MB 6S + Header + dn, bio, loc, pfp long, 6's title katalog, fake insta/gmail, bc kontak, greetings pfp</small></td><td class="price">Rp. 48.000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        • Inrush 48 Jam: + Rp. 8.000<br>
+        • Inrush 3 hari: + Rp. 5.000<br>
+        • Pengerjaan maksimal 8 hari<br>
+        • Revisi maksimal 3 kali<br>
+        • Harap kirim contoh editan yang diinginkan<br>
+        • Dilarang mengganti muse/design saat order telah diproses
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://pin.it/L3oaVW0Ap'">Result</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       MB
+       ========================= -->
+  <div id="mb" class="container category">
+    <div class="pricelist-container">
+      <div class="section-title1">MOODBOARD</div>
+      <p class="hint">Open order moodboard custom &amp; ready.</p>
+
+      <table>
+        <thead><tr><th colspan="2">MOODBOARD BASIC</th></tr></thead>
+        <tbody>
+          <tr><td>3 Slide + Header</td><td class="price">Rp 3.000</td></tr>
+          <tr><td>6 Slide + Header</td><td class="price">Rp 6.000</td></tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:14px;">
+        <thead><tr><th colspan="2">MOODBOARD DECO/DESIGN</th></tr></thead>
+        <tbody>
+          <tr><td>3 Slide + Header</td><td class="price">Rp 13.000</td></tr>
+          <tr><td>6 Slide + Header</td><td class="price">Rp 17.000</td></tr>
+        </tbody>
+      </table>
+
+      <table style="margin-top:14px;">
+        <thead><tr><th colspan="2">MOODBOARD LOVEBOARD</th></tr></thead>
+        <tbody>
+          <tr><td>3 Slide + Header</td><td class="price">Rp 14.000</td></tr>
+          <tr><td>6 Slide + Header</td><td class="price">Rp 18.000</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>NOTE PENTING:</strong><br>
+        • Inrush 3 hari: +Rp. 2.000<br>
+        • Inrush 24 jam: +Rp. 5.000<br>
+        • Pengerjaan maksimal 7 hari<br>
+        • Revisi maksimal 3 kali.<br>
+        • Harap kirim contoh editan yang diinginkan.<br>
+        • Dilarang mengganti muse/design saat order telah diproses.
+      </div>
+
+      <div class="button-wrapper">
+        <button class="order-btn" onclick="location.href='format.html'">Format Order</button>
+        <button class="order-btn alt" onclick="location.href='https://pin.it/L3oaVW0Ap'">Result</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 DiptARM Store</footer>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        const target = btn.getAttribute('data-target');
+        const el = document.getElementById(target);
+        if (el) el.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

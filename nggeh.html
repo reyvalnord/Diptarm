@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiptARM Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* TEMA UI: Mengikuti kalkulator.html */
+        :root {
+            --rm-blue: #0b2a6f;
+            --rm-blue2: #1d4ed8;
+            --rm-gold: #d4af37;
+            --rm-ice: #f6f8ff;
+            --rm-white: #ffffff;
+            --ink: #0b2a6f;
+        }
+
+        body {
+            background-color: var(--rm-ice);
+            color: var(--ink);
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-panel {
+            background-color: var(--rm-white);
+            border: 3px solid var(--rm-blue);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 0 var(--rm-blue); /* Efek 2D Cartoon */
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--rm-blue);
+            margin: 0 0 20px 0;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #eef2ff;
+            padding: 6px;
+            border-radius: 16px;
+            border: 2px solid var(--rm-blue);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--rm-blue);
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .mode-btn.active {
+            background-color: var(--rm-blue);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--rm-blue);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            border: 2px solid var(--rm-blue);
+            border-radius: 12px;
+            color: var(--ink);
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 45px;
+            background-color: #fff;
+            border: 2px solid var(--rm-blue);
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .main-btn {
+            flex: 1;
+            padding: 14px;
+            background-color: var(--rm-white);
+            color: var(--rm-blue);
+            border: 2px solid var(--rm-blue);
+            border-radius: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 5px 0 var(--rm-blue);
+            transition: 0.1s;
+        }
+
+        .main-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--rm-blue);
+        }
+
+        .main-btn.download-btn {
+            background-color: var(--rm-blue);
+            color: white;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            justify-content: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 4px solid var(--rm-blue);
+            border-radius: 16px;
+            background-color: #000;
+        }
+
+        .hidden { display: none; }
+        .hint { font-size: 10px; color: var(--rm-blue); text-align: center; margin-top: 10px; font-weight: 600;}
+    </style>
+</head>
+<body>
+
+    <div class="admin-panel">
+        <h2>DIPTARM EDITOR</h2>
+        
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="switchMode('PICTURE')">SINGLE</button>
+            <button class="mode-btn" onclick="switchMode('MB')">MOODBOARD</button>
+        </div>
+
+        <div class="form-group">
+            <label>Text Judul:</label>
+            <input type="text" id="topText" value="RESULT">
+        </div>
+
+        <div id="input-PICTURE" class="mode-input">
+            <div class="form-group">
+                <label>Upload Gambar:</label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+        </div>
+
+        <div id="input-MB" class="mode-input hidden">
+            <div class="form-group">
+                <label>Header WA (2:1):</label>
+                <input type="file" id="input-wa" accept="image/*">
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div class="form-group">
+                    <label>F1:</label>
+                    <input type="file" id="input-1" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>F2:</label>
+                    <input type="file" id="input-2" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>F3:</label>
+                    <input type="file" id="input-3" accept="image/*">
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div class="form-group">
+                    <label>F4:</label>
+                    <input type="file" id="input-4" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>F5:</label>
+                    <input type="file" id="input-5" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>F6:</label>
+                    <input type="file" id="input-6" accept="image/*">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Pilih Warna Tema:</label>
+            <input type="color" id="themeColor" value="#cc0000">
+            <div class="hint">Klik di bagian gambar untuk menentukan warna!</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="main-btn" onclick="resetAll()">RESET</button>
+            <button class="main-btn download-btn" onclick="downloadImage()">DOWNLOAD</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="resultCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        
+        let currentMode = 'PICTURE';
+        // Inisialisasi storage untuk 6 gambar moodboard
+        let images = { PICTURE: null, wa: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null };
+
+        const logo = new Image();
+        logo.src = 'logo2.png';
+        logo.onload = () => generate();
+
+        window.onload = () => {
+            if(currentMode === 'PICTURE') {
+                document.getElementById('topText').value = "RESULT";
+            }
+            generate();
+        };
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            
+            const topTxtInput = document.getElementById('topText');
+            if (mode === 'MB') {
+                topTxtInput.value = "RESULT MOODBOARD";
+            } else {
+                topTxtInput.value = "RESULT";
+            }
+
+            document.getElementById('input-PICTURE').classList.toggle('hidden', mode !== 'PICTURE');
+            document.getElementById('input-MB').classList.toggle('hidden', mode !== 'MB');
+            generate();
+        }
+
+        function handleUpload(inputId, storageKey) {
+            const el = document.getElementById(inputId);
+            if(!el) return;
+            el.addEventListener('change', function(e) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() { images[storageKey] = img; generate(); }
+                    img.src = event.target.result;
+                }
+                if(e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+            });
+        }
+
+        handleUpload('imageInput', 'PICTURE');
+        handleUpload('input-wa', 'wa');
+        handleUpload('input-1', '1');
+        handleUpload('input-2', '2');
+        handleUpload('input-3', '3');
+        handleUpload('input-4', '4');
+        handleUpload('input-5', '5');
+        handleUpload('input-6', '6');
+
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            const p = ctx.getImageData(x, y, 1, 1).data;
+            const hex = "#" + ("000000" + ((p[0] << 16) | (p[1] << 8) | p[2]).toString(16)).slice(-6);
+            document.getElementById('themeColor').value = hex;
+            generate();
+        });
+
+        function resetAll() {
+            images = { PICTURE: null, wa: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null };
+            document.getElementById('topText').value = (currentMode === 'PICTURE') ? "RESULT" : "RESULT MOODBOARD";
+            document.getElementById('themeColor').value = "#cc0000";
+            document.querySelectorAll('input[type="file"]').forEach(input => input.value = "");
+            generate();
+        }
+
+        function generate() {
+            const topTxt = document.getElementById('topText').value.toUpperCase();
+            const color = document.getElementById('themeColor').value;
+            const bottomTxt = "RESULT DIPTARM STORE";
+
+            if (currentMode === 'PICTURE') {
+                renderPictureMode(topTxt, bottomTxt, color);
+            } else {
+                renderMBMode(topTxt, bottomTxt, color);
+            }
+        }
+
+        function drawLogo(x, y, w, h) {
+            if (logo.complete && logo.naturalWidth !== 0) {
+                const aspect = logo.height / logo.width;
+                const logoW = w * 0.7; 
+                const logoH = logoW * aspect;
+                
+                const tingkatKeKiri = 0.21; 
+                const shiftLeft = w * tingkatKeKiri; 
+                
+                const centerX = (x + (w / 2) - (logoW / 2)) - shiftLeft;
+                const centerY = y + (h / 2) - (logoH / 2);
+                
+                ctx.drawImage(logo, centerX, centerY, logoW, logoH);
+            }
+        }
+
+        function renderPictureMode(top, bottom, color) {
+            let img = images.PICTURE;
+            let imgW = img ? img.width : 500;
+            let imgH = img ? img.height : 500;
+
+            const padding = imgW * 0.05;
+            const cW = imgW + (padding * 2);
+            const headerH = cW * 0.10;
+            const cH = imgH + (padding * 2) + (headerH * 2);
+
+            canvas.width = cW; canvas.height = cH;
+            drawBase(cW, cH, headerH, color, top, bottom);
+
+            if (img) {
+                ctx.drawImage(img, padding, headerH + padding);
+                drawLogo(padding, headerH + padding, imgW, imgH);
+            } else {
+                ctx.fillStyle = "#1a1a1a";
+                ctx.fillRect(padding, headerH + padding, imgW, imgH);
+                drawPlaceholderText("AWAITING_INPUT...", cW/2, headerH + padding + (imgH/2));
+            }
+        }
+
+        function renderMBMode(top, bottom, color) {
+            const cW = 600; 
+            const padding = cW * 0.05;
+            const contentW = cW - (padding * 2); 
+            const headerH = cW * 0.10;
+            const waH = contentW * 0.5;
+            const gridH = contentW / 3;
+
+            // Logika deteksi: Apakah ada gambar di baris kedua (4, 5, atau 6)?
+            const hasRowTwo = images[4] || images[5] || images[6];
+            const activeGridH = hasRowTwo ? (gridH * 2) : gridH;
+
+            const cH = (headerH * 2) + (padding * 2) + waH + activeGridH;
+
+            canvas.width = cW; canvas.height = cH;
+            drawBase(cW, cH, headerH, color, top, bottom);
+
+            const startX = padding;
+            const startY = headerH + padding;
+
+            // Render Header WA
+            ctx.fillStyle = "#1a1a1a";
+            if (images.wa) {
+                ctx.drawImage(images.wa, startX, startY, contentW, waH);
+                drawLogo(startX, startY, contentW, waH);
+            } else {
+                ctx.fillRect(startX, startY, contentW, waH);
+                drawPlaceholderText("+ HEADER_DATA", cW/2, startY + (waH/2));
+            }
+
+            // Render Grid (Maks 6 slot)
+            const slotW = contentW / 3;
+            const totalSlots = hasRowTwo ? 6 : 3;
+
+            for (let i = 0; i < totalSlots; i++) {
+                const col = i % 3;
+                const row = Math.floor(i / 3);
+                const x = startX + (col * slotW);
+                const y = startY + waH + (row * gridH);
+                
+                const imgKey = i + 1;
+
+                if (images[imgKey]) {
+                    ctx.drawImage(images[imgKey], x, y, slotW, gridH);
+                } else {
+                    ctx.fillStyle = (i % 2 === 0) ? "#222" : "#2a2a2a";
+                    ctx.fillRect(x, y, slotW, gridH);
+                    drawPlaceholderText(`+ ${imgKey}`, x + (slotW/2), y + (gridH/2));
+                }
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, slotW, gridH);
+            }
+        }
+
+        function drawBase(w, h, hH, color, top, bottom) {
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, w, hH);
+            ctx.fillRect(0, h - hH, w, hH);
+            renderText(top, bottom, w, h, hH);
+        }
+
+        function drawPlaceholderText(txt, x, y) {
+            ctx.fillStyle = "#ff0000";
+            ctx.font = "10px Orbitron";
+            ctx.textAlign = "center";
+            ctx.fillText(txt, x, y);
+        }
+
+        function renderText(top, bottom, w, h, hH) {
+            ctx.fillStyle = "#FFFFFF";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            const fSize = hH * 0.5;
+            ctx.font = `900 ${fSize}px 'Orbitron', sans-serif`;
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.lineWidth = fSize * 0.02;
+            ctx.strokeText(`" ${top} "`, w/2, hH/2);
+            ctx.fillText(`" ${top} "`, w/2, hH/2);
+            ctx.strokeText(`" ${bottom} "`, w/2, h - (hH/2));
+            ctx.fillText(`" ${bottom} "`, w/2, h - (hH/2));
+        }
+
+        function downloadImage() {
+            if (!images.PICTURE && currentMode === 'PICTURE') return alert("Pilih foto dulu!");
+            const link = document.createElement('a');
+            link.download = `DiptARM_${currentMode}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        document.getElementById('topText').addEventListener('input', generate);
+        document.getElementById('themeColor').addEventListener('input', generate);
+            
+    </script>
+</body>
+</html>

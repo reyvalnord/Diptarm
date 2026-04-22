@@ -958,7 +958,7 @@
     function getRushTier(lpm){
       let tier = {feeP:0, minHours:null, note:''};
       if(lpm < 10){ tier.note = 'Minimal order 10 unit.'; return tier; }
-      if(lpm >=10 && lpm <= 200){ tier.feeP = 200; tier.minHours=2.1; tier.note='10-200 (2 jam)'; }
+      if(lpm >=10 && lpm <= 200){ tier.feeP = 200; tier.minHours=3; tier.note='10-200 (2 jam)'; }
       else if(lpm >=201 && lpm <=300){ tier.feeP = 200; tier.minHours=3.1; tier.note='200-300 (4 jam)'; }
       else if(lpm >=301 && lpm <=500){ tier.feeP = 300; tier.minHours=4.1; tier.note='301-500 (4 jam)'; }
       else if(lpm >=501 && lpm <=999){ tier.feeP = 300; tier.minHours=5.1; tier.note='500-999 (4 jam)'; }

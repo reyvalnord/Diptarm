@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiptARM Editor - Navy Theme</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rm-blue: #0b2a6f;
+            --rm-blue2: #1d4ed8;
+            --rm-gold: #d4af37;
+            --rm-ice: #f6f8ff;
+            --rm-white: #ffffff;
+            --ink: #0b2a6f;
+        }
+
+        body {
+            background-color: var(--rm-ice);
+            color: var(--ink);
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-panel {
+            background-color: var(--rm-white);
+            border: 3px solid var(--rm-blue);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 0 var(--rm-blue);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--rm-blue);
+            margin: 0 0 20px 0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            background: #eef2ff;
+            padding: 6px;
+            border-radius: 16px;
+            border: 2px solid var(--rm-blue);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--rm-blue);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .mode-btn.active {
+            background-color: var(--rm-blue);
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--rm-blue);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #fff;
+            border: 2px solid var(--rm-blue);
+            border-radius: 10px;
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+            font-size: 12px;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            background-color: #fff;
+            border: 2px solid var(--rm-blue);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .main-btn {
+            flex: 1;
+            padding: 14px;
+            background-color: var(--rm-white);
+            color: var(--rm-blue);
+            border: 2px solid var(--rm-blue);
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 5px 0 var(--rm-blue);
+            transition: 0.1s;
+        }
+
+        .main-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--rm-blue);
+        }
+
+        .main-btn.download-btn {
+            background-color: var(--rm-blue);
+            color: white;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            justify-content: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 4px solid var(--rm-blue);
+            border-radius: 16px;
+            background-color: #000;
+        }
+
+        .hidden { display: none; }
+        .hint { font-size: 10px; color: var(--rm-blue); text-align: center; margin-top: 10px; font-weight: 600;}
+        
+        .grid-row {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-panel">
+        <h2>DIPTARM EDITOR</h2>
+        
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="switchMode('PICTURE')">SINGLE</button>
+            <button class="mode-btn" onclick="switchMode('MB')">MOODBOARD</button>
+        </div>
+
+        <div class="form-group">
+            <label>Text Judul:</label>
+            <input type="text" id="topText" value="RESULT">
+        </div>
+
+        <div id="input-PICTURE" class="mode-input">
+            <div class="form-group">
+                <label>Upload Gambar Utama:</label>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+        </div>
+
+        <div id="input-MB" class="mode-input hidden">
+            <div class="form-group"><label>Header WA:</label><input type="file" id="input-wa" accept="image/*"></div>
+            <div class="grid-row">
+                <div class="form-group"><label>F1:</label><input type="file" id="input-1" accept="image/*"></div>
+                <div class="form-group"><label>F2:</label><input type="file" id="input-2" accept="image/*"></div>
+                <div class="form-group"><label>F3:</label><input type="file" id="input-3" accept="image/*"></div>
+            </div>
+            <div class="grid-row">
+                <div class="form-group"><label>F4:</label><input type="file" id="input-4" accept="image/*"></div>
+                <div class="form-group"><label>F5:</label><input type="file" id="input-5" accept="image/*"></div>
+                <div class="form-group"><label>F6:</label><input type="file" id="input-6" accept="image/*"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Warna Tema (Header/Footer):</label>
+            <input type="color" id="themeColor" value="#0b2a6f">
+            <div class="hint">Klik gambar di kanvas untuk ambil warna otomatis!</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="main-btn" onclick="resetAll()">RESET</button>
+            <button class="main-btn download-btn" onclick="downloadImage()">DOWNLOAD</button>
+        </div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="resultCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        let currentMode = 'PICTURE';
+        let images = { PICTURE: null, wa: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null };
+
+        const logo = new Image();
+        logo.src = 'logo2.png';
+        logo.onload = () => generate();
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('topText').value = (mode === 'MB') ? "RESULT MOODBOARD" : "RESULT";
+            document.getElementById('input-PICTURE').classList.toggle('hidden', mode !== 'PICTURE');
+            document.getElementById('input-MB').classList.toggle('hidden', mode !== 'MB');
+            generate();
+        }
+
+        function handleUpload(inputId, storageKey) {
+            const el = document.getElementById(inputId);
+            el.addEventListener('change', function(e) {
+                if(!e.target.files[0]) return;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() { images[storageKey] = img; generate(); }
+                    img.src = event.target.result;
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            });
+        }
+
+        ['imageInput', 'input-wa', 'input-1', 'input-2', 'input-3', 'input-4', 'input-5', 'input-6'].forEach(id => {
+            handleUpload(id, id === 'imageInput' ? 'PICTURE' : id.replace('input-', ''));
+        });
+
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const p = ctx.getImageData(x, y, 1, 1).data;
+            document.getElementById('themeColor').value = "#" + ("000000" + ((p[0] << 16) | (p[1] << 8) | p[2]).toString(16)).slice(-6);
+            generate();
+        });
+
+        function resetAll() {
+            images = { PICTURE: null, wa: null, 1: null, 2: null, 3: null, 4: null, 5: null, 6: null };
+            document.querySelectorAll('input[type="file"]').forEach(i => i.value = "");
+            document.getElementById('themeColor').value = "#0b2a6f";
+            generate();
+        }
+
+        function generate() {
+            const topTxt = document.getElementById('topText').value.toUpperCase();
+            const color = document.getElementById('themeColor').value;
+            if (currentMode === 'PICTURE') renderPictureMode(topTxt, color);
+            else renderMBMode(topTxt, color);
+        }
+
+        function drawLogo(x, y, w, h) {
+            if (logo.complete && logo.naturalWidth !== 0) {
+                const logoW = w * 0.7;
+                const logoH = logoW * (logo.height / logo.width);
+                const shiftLeft = w * 0.21;
+                ctx.drawImage(logo, (x + (w/2) - (logoW/2)) - shiftLeft, y + (h/2) - (logoH/2), logoW, logoH);
+            }
+        }
+
+        function renderPictureMode(top, color) {
+            let img = images.PICTURE;
+            let imgW = img ? img.width : 500;
+            let imgH = img ? img.height : 500;
+            const padding = imgW * 0.05;
+            const headerH = (imgW + padding*2) * 0.10;
+            canvas.width = imgW + (padding * 2);
+            canvas.height = imgH + (padding * 2) + (headerH * 2);
+            drawBase(canvas.width, canvas.height, headerH, color, top);
+            if (img) {
+                ctx.drawImage(img, padding, headerH + padding);
+                drawLogo(padding, headerH + padding, imgW, imgH);
+            }
+        }
+
+        function renderMBMode(top, color) {
+            const cW = 600;
+            const padding = cW * 0.05;
+            const contentW = cW - (padding * 2);
+            const headerH = cW * 0.10;
+            const waH = contentW * 0.5;
+            const gridH = contentW / 3;
+
+            const hasWA = !!images.wa;
+            const hasRow1 = !!(images[1] || images[2] || images[3]);
+            const hasRow2 = !!(images[4] || images[5] || images[6]);
+
+            let dynamicHeight = 0;
+            if (hasWA) dynamicHeight += waH;
+            if (hasRow1 || hasRow2) dynamicHeight += gridH;
+            if (hasRow2) dynamicHeight += gridH;
+            if (dynamicHeight === 0) dynamicHeight = waH;
+
+            canvas.width = cW;
+            canvas.height = (headerH * 2) + (padding * 2) + dynamicHeight;
+
+            drawBase(cW, canvas.height, headerH, color, top);
+
+            let currentY = headerH + padding;
+            const startContentY = currentY;
+
+            if (hasWA) {
+                ctx.drawImage(images.wa, padding, currentY, contentW, waH);
+                currentY += waH;
+            } else if (!hasRow1 && !hasRow2) {
+                ctx.fillStyle = "#1a1a1a";
+                ctx.fillRect(padding, currentY, contentW, waH);
+                currentY += waH;
+            }
+
+            if (hasRow1 || hasRow2) {
+                for (let i = 0; i < 3; i++) {
+                    const x = padding + (i * gridH);
+                    if (images[i+1]) ctx.drawImage(images[i+1], x, currentY, gridH, gridH);
+                    else { ctx.fillStyle = (i % 2 === 0) ? "#222" : "#2a2a2a"; ctx.fillRect(x, currentY, gridH, gridH); }
+                    ctx.strokeStyle = "#000"; ctx.strokeRect(x, currentY, gridH, gridH);
+                }
+                currentY += gridH;
+            }
+
+            if (hasRow2) {
+                for (let i = 0; i < 3; i++) {
+                    const x = padding + (i * gridH);
+                    if (images[i+4]) ctx.drawImage(images[i+4], x, currentY, gridH, gridH);
+                    else { ctx.fillStyle = (i % 2 === 1) ? "#222" : "#2a2a2a"; ctx.fillRect(x, currentY, gridH, gridH); }
+                    ctx.strokeStyle = "#000"; ctx.strokeRect(x, currentY, gridH, gridH);
+                }
+            }
+            drawLogo(padding, startContentY, contentW, dynamicHeight);
+        }
+
+        function drawBase(w, h, hH, color, top) {
+            ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = color; ctx.fillRect(0, 0, w, hH); ctx.fillRect(0, h - hH, w, hH);
+            
+            ctx.textAlign = "center"; 
+            ctx.textBaseline = "middle";
+            const fSize = hH * 0.5; 
+            ctx.font = `900 ${fSize}px Orbitron`;
+            
+            ctx.strokeStyle = "#FFFFFF";
+            ctx.lineWidth = 0.7; 
+            ctx.lineJoin = "round";
+            ctx.fillStyle = "#FFFFFF";
+
+            ctx.strokeText(`" ${top} "`, w/2, hH/2);
+            ctx.fillText(`" ${top} "`, w/2, hH/2);
+
+            ctx.strokeText(`" RESULT DIPTARM STORE "`, w/2, h - hH/2);
+            ctx.fillText(`" RESULT DIPTARM STORE "`, w/2, h - hH/2);
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = `DiptARM_Result.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        document.getElementById('topText').addEventListener('input', generate);
+        document.getElementById('themeColor').addEventListener('input', generate);
+        window.onload = generate;
+    </script>
+</body>
+</html>

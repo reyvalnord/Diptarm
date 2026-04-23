@@ -234,7 +234,7 @@
             currentMode = mode;
             document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            document.getElementById('topText').value = (mode === 'MB') ? "MOODBOARD" : "RESULT";
+            document.getElementById('topText').value = (mode === 'MB') ? "MOODBOARD" : "";
             document.getElementById('input-PICTURE').classList.toggle('hidden', mode !== 'PICTURE');
             document.getElementById('input-MB').classList.toggle('hidden', mode !== 'MB');
             generate();

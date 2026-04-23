@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiptARM Swtup</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0b2a6f;
+            --ice: #f6f8ff;
+            --white: #ffffff;
+            --gold: #c8a951;
+            --red: #a50019;
+        }
+
+        body {
+            background: linear-gradient(180deg, #eef3ff 0%, #e6ebf7 100%);
+    font-family: 'Orbitron', 'Inter', sans-serif;;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .admin-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+            border: 3px solid var(--navy);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 620px;
+            box-sizing: border-box;
+            box-shadow: 0 12px 0 var(--navy), 0 18px 40px rgba(11, 42, 111, 0.12);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            background: linear-gradient(90deg, var(--gold), #ffffff 50%, var(--red));
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--navy);
+            margin-top: 4px;
+            margin-bottom: 18px;
+            font-family: 'Orbitron';
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .form-section {
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e8edf8;
+            padding-bottom: 12px;
+        }
+
+        .form-section h4 {
+            margin: 5px 0 12px;
+            color: var(--red);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 900;
+        }
+
+        .upload-block {
+            padding: 12px;
+            border: 1px solid #e2e8f4;
+            border-radius: 16px;
+            background: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .upload-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .block-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: var(--navy);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #20335f;
+        }
+
+        input[type="text"], textarea, input[type="file"], input[type="color"] {
+            width: 100%;
+            padding: 11px 12px;
+            border: 2px solid #cfd8ea;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 13px;
+            font-family: 'Inter';
+            background: #fff;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(165, 0, 25, 0.08);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 92px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 13px;
+            border: 2px solid var(--navy);
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 900;
+            font-family: 'Orbitron';
+            font-size: 12px;
+            transition: 0.2s;
+            letter-spacing: 0.8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            background: white;
+            color: var(--navy);
+            box-shadow: 0 5px 0 var(--navy);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--navy), #081d4d);
+            color: white;
+            box-shadow: 0 5px 0 #000;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 4px solid var(--navy);
+            border-radius: 15px;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-panel">
+        <h2>DIPTARM SETUP</h2>
+
+        <div class="form-section">
+            <div class="form-group"><label>Judul Result:</label><input type="text" id="topText" value="PAKET"></div>
+            <div class="form-group"><label>PdN:</label><input type="text" id="input-name" value=''></div>
+            <div class="form-group"><label>Desc:</label><textarea id="input-desc" rows="4"></textarea></div>
+            <div class="form-group">
+                <label>Loc:</label>
+                <input type="text" id="input-loc" value="">
+            </div>
+            <div class="form-group">
+                <label>Fake Instagram:</label>
+                <input type="text" id="input-ig" value="">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h4>Pict</h4>
+
+            <div class="upload-block">
+                <div class="form-group"><label>Profil:</label><input type="file" id="up-pp"></div>
+            </div>
+
+            <div class="upload-block">
+                <div class="form-group"><label>Header:</label><input type="file" id="up-header"></div>
+            </div>
+
+            <div class="upload-block">
+                <div class="grid-3">
+                    <div class="form-group"><label>Katalog 1:</label><input type="file" id="up-k1"></div>
+                    <div class="form-group"><label>Katalog 2:</label><input type="file" id="up-k2"></div>
+                    <div class="form-group"><label>Katalog 3:</label><input type="file" id="up-k3"></div>
+                </div>
+                <div class="grid-3">
+                    <div class="form-group"><label>Katalog 4:</label><input type="file" id="up-k4"></div>
+                    <div class="form-group"><label>Katalog 5:</label><input type="file" id="up-k5"></div>
+                    <div class="form-group"><label>Katalog 6:</label><input type="file" id="up-k6"></div>
+                </div>
+            </div>
+
+            <div class="upload-block">
+                <div class="form-group" style="margin-bottom:0;"><label>Warna Tema:</label><input type="color" id="themeColor" value="#cc0000"></div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-reset" onclick="location.reload()">RESET</button>
+            <button class="btn btn-download" onclick="downloadImage()">DOWNLOAD</button>
+        </div>
+    </div>
+
+    <canvas id="resultCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        let imgData = {
+            header: null,
+            pp: null,
+            k1: null,
+            k2: null,
+            k3: null,
+            k4: null,
+            k5: null,
+            k6: null
+        };
+
+        const imgKatalog = new Image();
+        imgKatalog.src = 'katalog.png';
+        const imgLogo = new Image();
+imgLogo.src = 'logo2.png';
+        imgKatalog.onload = () => draw();
+        imgKatalog.onerror = () => { console.log("katalog.png tidak ditemukan, pakai ikon cadangan."); draw(); };
+
+        const iconMsg = "M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z";
+        const iconShare = "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z";
+        const iconLayanan = "M12 2l-5.5 9h11L12 2z M3 13h8v8H3v-8z M17.5 13c-2.48 0-4.5 2.02-4.5 4.5s2.02 4.5 4.5 4.5 4.5-2.02 4.5-4.5-2.02-4.5-4.5-4.5z";
+        const iconPin = "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z";
+        const iconInsta = "M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z";
+        const fallbackKatalog = "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z";
+
+        function setupFile(id, key) {
+            document.getElementById(id).addEventListener('change', function(e) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => { imgData[key] = img; draw(); };
+                    img.src = ev.target.result;
+                };
+                if (e.target.files[0]) reader.readAsDataURL(e.target.files[0]);
+            });
+        }
+
+        setupFile('up-header', 'header');
+        setupFile('up-pp', 'pp');
+        setupFile('up-k1', 'k1');
+        setupFile('up-k2', 'k2');
+        setupFile('up-k3', 'k3');
+        setupFile('up-k4', 'k4');
+        setupFile('up-k5', 'k5');
+        setupFile('up-k6', 'k6');
+
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const hex = "#" + ("000000" + ((pixel[0] << 16) | (pixel[1] << 8) | pixel[2]).toString(16)).slice(-6);
+            document.getElementById('themeColor').value = hex;
+            draw();
+        });
+
+        function hasValue(v) {
+            return (v || '').trim().length > 0;
+        }
+
+        function drawCover(img, x, y, w, h) {
+            if (!img) {
+                ctx.fillStyle = "#1a1a1a";
+                ctx.fillRect(x, y, w, h);
+                return;
+            }
+            const r = img.width / img.height;
+            const cr = w / h;
+            let sx, sy, sw, sh;
+            if (r > cr) {
+                sh = img.height;
+                sw = img.height * cr;
+                sx = (img.width - sw) / 2;
+                sy = 0;
+            } else {
+                sw = img.width;
+                sh = img.width / cr;
+                sx = 0;
+                sy = (img.height - sh) / 2;
+            }
+            ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+        }
+
+        function drawIcon(source, x, y, sz, col) {
+            if (source instanceof HTMLImageElement && source.complete && source.naturalWidth > 0) {
+                ctx.drawImage(source, x, y, sz, sz);
+            } else {
+                const path = (source instanceof HTMLImageElement) ? fallbackKatalog : source;
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(sz / 24, sz / 24);
+                ctx.fillStyle = col;
+                ctx.fill(new Path2D(path));
+                ctx.restore();
+            }
+        }
+
+        function measureWrappedLines(txt, maxW, font) {
+            const prev = ctx.font;
+            ctx.font = font;
+            const paras = (txt || '').split('\n');
+            let totalLines = 0;
+
+            paras.forEach(p => {
+                const clean = p.trim();
+                if (!clean) {
+                    totalLines++;
+                    return;
+                }
+
+                const words = clean.split(/\s+/);
+                let line = '';
+
+                for (let n = 0; n < words.length; n++) {
+                    const test = line ? (line + ' ' + words[n]) : words[n];
+                    if (ctx.measureText(test).width > maxW && line) {
+                        totalLines++;
+                        line = words[n];
+                    } else {
+                        line = test;
+                    }
+                }
+                totalLines++;
+            });
+
+            ctx.font = prev;
+            return Math.max(totalLines, 1);
+        }
+
+        function drawWrappedText(txt, x, y, maxW, lineH, font, color) {
+            const prevFont = ctx.font;
+            const prevFill = ctx.fillStyle;
+            const prevAlign = ctx.textAlign;
+
+            ctx.font = font;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'left';
+
+            const paras = (txt || '').split('\n');
+            let curY = y;
+
+            paras.forEach(p => {
+                const clean = p.trim();
+                if (!clean) {
+                    curY += lineH;
+                    return;
+                }
+
+                const words = clean.split(/\s+/);
+                let line = '';
+
+                for (let n = 0; n < words.length; n++) {
+                    const test = line ? (line + ' ' + words[n]) : words[n];
+                    if (ctx.measureText(test).width > maxW && line) {
+                        ctx.fillText(line, x, curY);
+                        line = words[n];
+                        curY += lineH;
+                    } else {
+                        line = test;
+                    }
+                }
+
+                ctx.fillText(line, x, curY);
+                curY += lineH;
+            });
+
+            ctx.font = prevFont;
+            ctx.fillStyle = prevFill;
+            ctx.textAlign = prevAlign;
+
+            return curY;
+        }
+
+        function drawCatalogRow(keys, xStart, y, size, gap) {
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                const x = xStart + (size + gap) * i;
+                if (imgData[key]) {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, size, size, 12);
+                    ctx.clip();
+                    drawCover(imgData[key], x, y, size, size);
+                    ctx.restore();
+                }
+            }
+        }
+
+        function hasAnyCatalog() {
+            return ['k1', 'k2', 'k3', 'k4', 'k5', 'k6'].some(k => imgData[k]);
+        }
+
+        function getLayout() {
+            const W = 600;
+            const barH = 70;
+            const pad = W * 0.05;
+            const innerW = W - (pad * 2);
+
+            const descTxt = document.getElementById('input-desc').value || '';
+            const locTxt = document.getElementById('input-loc').value || '';
+            const igTxt = document.getElementById('input-ig').value || '';
+            const nameTxt = document.getElementById('input-name').value || '';
+
+            const showHeader = !!imgData.header;
+            const showPP = !!imgData.pp;
+            const showName = hasValue(nameTxt);
+            const showButtons = showPP || showName;
+            const showCatalogs = hasAnyCatalog();
+            const showDesc = hasValue(descTxt);
+            const showLoc = hasValue(locTxt);
+            const showIg = hasValue(igTxt);
+
+            const descLines = showDesc ? measureWrappedLines(descTxt, innerW - 110, "500 18px Inter") : 0;
+            const locLines = showLoc ? measureWrappedLines(locTxt, innerW - 110, "500 18px Inter") : 0;
+
+            const ppS = 150;
+            const headerH = 220;
+            let y = barH + pad;
+
+            if (showHeader) {
+                y += headerH;
+            }
+
+            if (showPP) {
+                const ppY = showHeader ? (barH + pad + headerH - 90) : (y + 20);
+                const nameY = ppY + ppS + 50;
+                y = nameY + 35;
+            } else if (showName) {
+                const nameY = y + 25;
+                y = nameY + 35;
+            }
+
+            if (showButtons) {
+                y += 15 + 55 + 35;
+            }
+
+            if (showCatalogs) {
+                y += 10;
+                y += 20; // title
+                const row1 = ['k1', 'k2', 'k3'];
+                const row2 = ['k4', 'k5', 'k6'];
+
+                if (row1.some(k => imgData[k])) {
+                    y += 15 + 160;
+                    if (row2.some(k => imgData[k])) y += 12;
+                }
+                if (row2.some(k => imgData[k])) {
+                    y += 160;
+                }
+                y += 25;
+            }
+
+            if (showDesc) {
+                y += 45 + (descLines * 26) + 15;
+            }
+
+            if (showLoc) {
+                y += 55 + (locLines * 26) + 15;
+            }
+
+            if (showIg) {
+                y += 40 + 10;
+            }
+
+            return {
+                W,
+                barH,
+                pad,
+                innerW,
+                ppS,
+                showHeader,
+                showPP,
+                showName,
+                showButtons,
+                showCatalogs,
+                showDesc,
+                showLoc,
+                showIg,
+                descTxt,
+                locTxt,
+                igTxt,
+                nameTxt,
+                descLines,
+                locLines,
+                contentBottom: y
+            };
+        }
+
+        function draw() {
+            const layout = getLayout();
+            const W = layout.W;
+            const barH = layout.barH;
+            const pad = layout.pad;
+            const innerW = layout.innerW;
+
+            const theme = document.getElementById('themeColor').value;
+            const ppS = layout.ppS;
+
+            canvas.width = W;
+            canvas.height = layout.contentBottom + barH + pad;
+
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, W, canvas.height);
+
+            ctx.fillStyle = theme;
+            ctx.fillRect(0, 0, W, barH);
+            ctx.fillRect(0, canvas.height - barH, W, barH);
+
+            ctx.fillStyle = "#FFF";
+            ctx.fillRect(pad, barH + pad, innerW, layout.contentBottom - (barH + pad) + 5);
+
+            let y = barH + pad;
+            const contentX = pad;
+
+            if (layout.showHeader) {
+                drawCover(imgData.header, contentX, y, innerW, 220);
+                y += 220;
+            }
+
+            if (layout.showPP) {
+                const ppY = layout.showHeader ? (barH + pad + 220 - 90) : (y + 20);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(W / 2, ppY + ppS / 2, ppS / 2, 0, Math.PI * 2);
+                ctx.clip();
+                drawCover(imgData.pp, W / 2 - ppS / 2, ppY, ppS, ppS);
+                ctx.restore();
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(W / 2, ppY + ppS / 2, ppS / 2, 0, Math.PI * 2);
+                ctx.strokeStyle = "#FFFFFF";
+                ctx.lineWidth = 6;
+                ctx.stroke();
+                ctx.restore();
+
+                ctx.fillStyle = "#000";
+                ctx.textAlign = "center";
+                ctx.font = "800 21px Inter";
+                if (hasValue(layout.nameTxt)) {
+                    ctx.fillText(layout.nameTxt, W / 2, ppY + ppS + 50);
+                }
+
+                y = ppY + ppS + 85;
+            } else if (layout.showName) {
+                ctx.fillStyle = "#000";
+                ctx.textAlign = "center";
+                ctx.font = "800 21px Inter";
+                ctx.fillText(layout.nameTxt, W / 2, y + 25);
+                y = y + 60;
+            }
+
+            if (layout.showButtons) {
+                const btnY = y;
+                const bW = 155;
+                const bStartX = pad + (innerW - (bW * 3 + 24)) / 2;
+                const btnIcons = [iconMsg, imgKatalog, iconShare];
+                const btnLabels = ["Kirim pesan", "Katalog", "Bagikan"];
+
+                for (let i = 0; i < 3; i++) {
+                    let bx = bStartX + (bW + 12) * i;
+                    ctx.strokeStyle = "#ddd";
+                    ctx.fillStyle = "#FFF";
+                    ctx.beginPath();
+                    ctx.roundRect(bx, btnY, bW, 55, 12);
+                    ctx.fill();
+                    ctx.stroke();
+                    drawIcon(btnIcons[i], bx + (bW / 2) - 10, btnY + 12, 20, "#111");
+                    ctx.fillStyle = "#111";
+                    ctx.font = "600 13px Inter";
+                    ctx.textAlign = "center";
+                    ctx.fillText(btnLabels[i], bx + bW / 2, btnY + 45);
+                }
+
+                y = btnY + 55 + 35;
+            }
+
+            if (layout.showCatalogs) {
+                const katY = y + 20;
+                ctx.fillStyle = "#f8f9fa";
+                ctx.fillRect(pad, y, innerW, 10);
+
+                ctx.textAlign = "left";
+                ctx.fillStyle = "#666";
+                ctx.font = "700 15px Inter";
+                ctx.fillText("Produk", pad + 25, katY);
+
+                ctx.textAlign = "right";
+                ctx.font = "500 13px Inter";
+                ctx.fillText("LIHAT SEMUA >", pad + innerW - 25, katY);
+
+                const kS = 160;
+                const kGap = 12;
+                const kStartX = pad + (innerW - (kS * 3 + 24)) / 2;
+                const row1 = ['k1', 'k2', 'k3'];
+                const row2 = ['k4', 'k5', 'k6'];
+
+                const row1Has = row1.some(k => imgData[k]);
+                const row2Has = row2.some(k => imgData[k]);
+
+                let kY = katY + 15;
+
+                if (row1Has) {
+                    drawCatalogRow(row1, kStartX, kY, kS, kGap);
+                    kY += kS + (row2Has ? 12 : 25);
+                }
+
+                if (row2Has) {
+                    drawCatalogRow(row2, kStartX, kY, kS, kGap);
+                    kY += kS + 25;
+                }
+
+                y = kY;
+                ctx.fillStyle = "#f8f9fa";
+                ctx.fillRect(pad, y, innerW, 10);
+                y += 35;
+            }
+
+            if (layout.showDesc) {
+                const dY = y + 15;
+                ctx.textAlign = "left";
+                drawIcon(imgKatalog, pad + 30, dY - 22, 26, "#888");
+
+                const afterDescY = drawWrappedText(layout.descTxt, pad + 75, dY + 5, innerW - 110, 26, "500 18px Inter", "#222");
+
+                ctx.fillStyle = "#f8f9fa";
+                ctx.fillRect(pad, afterDescY + 15, innerW, 8);
+
+                y = afterDescY + 35;
+            }
+
+            if (layout.showLoc) {
+                const iY = y + 20;
+                drawIcon(iconPin, pad + 30, iY - 20, 24, "#888");
+                ctx.fillStyle = "#006cba";
+                ctx.font = "500 18px Inter";
+                ctx.textAlign = "left";
+
+                const afterLocY = drawWrappedText(layout.locTxt, pad + 75, iY + 5, innerW - 110, 26, "500 18px Inter", "#006cba");
+                y = afterLocY + 10;
+            }
+
+            if (layout.showIg) {
+                const instaY = y + 20;
+                drawIcon(iconInsta, pad + 30, instaY - 20, 24, "#888");
+
+                ctx.fillStyle = "#111";
+                ctx.textAlign = "left";
+                ctx.font = "500 18px Inter";
+                ctx.fillText("Instagram", pad + 75, instaY);
+
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#777";
+                ctx.fillText(layout.igTxt, pad + innerW - 30, instaY);
+
+                y = instaY + 30;
+            }
+            
+            if (imgLogo.complete && imgLogo.naturalWidth > 0) {
+    const size = 400;
+    const x = 0; // kiri
+    const y = (canvas.height / 2) - (size / 2); // tengah vertikal
+
+    ctx.save();
+    ctx.globalAlpha = 0.95; // jelas terlihat
+    ctx.drawImage(imgLogo, x, y, size, size);
+    ctx.restore();
+}
+
+// --- PENGATURAN TEKS (JUDUL ATAS & FOOTER) ---
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#FFF";
+            ctx.strokeStyle = "#FFF"; // Warna garis tepi untuk mempertebal
+            ctx.font = "900 28px Orbitron";
+            ctx.lineWidth = 0.6; // Ketebalan ekstra (0.5 - 0.8 paling pas)
+
+            // 1. Gambar Judul Atas
+            const topT = (document.getElementById('topText').value || '').toUpperCase();
+            ctx.fillText(`" ${topT} "`, W / 2, barH / 2 + 10);
+            ctx.strokeText(`" ${topT} "`, W / 2, barH / 2 + 10);
+
+            // 2. Gambar Footer Bawah
+            const footerTxt = `" RESULT DIPTARM STORE "`;
+            ctx.fillText(footerTxt, W / 2, canvas.height - barH / 2 + 10);
+            ctx.strokeText(footerTxt, W / 2, canvas.height - barH / 2 + 10);
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'DIPTARM_FIXED.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        document.querySelectorAll('#topText, #input-name, #input-desc, #input-loc, #input-ig, #themeColor')
+            .forEach(el => {
+                el.addEventListener('input', draw);
+                el.addEventListener('change', draw);
+            });
+
+        window.onload = draw;
+    </script>
+</body>
+</html>

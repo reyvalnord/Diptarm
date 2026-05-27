@@ -777,7 +777,7 @@
 
             // 2. Siapkan Teks Pesan
             let namaHewanKapital = jenisHewanAktif.charAt(0).toUpperCase() + jenisHewanAktif.slice(1);
-            let pesanWA = `Bismillah... 🌙\n\nHalo *${namaPenerima}*!\nDi hari Raya Idul Adha ini, *${namaUser}* mengirimkan 1/2 Bagian *${bagianPilihan}* daging Qurban ${namaHewanKapital} untukmu.\n\n*HAPUS BAGIAN INI*\n(Jangan lupa kirimkan juga gambar kartu daging yang baru saja di-download)\n\nMohon maaf lahir & batin ✨🥩`;
+            let pesanWA = `Bismillah... 🌙\n\nHalo *${namaPenerima}*!\nDi hari Raya Idul Adha ini, *${namaUser}* mengirimkan Bagian ${bagianPilihan} daging ${namaHewanKapital} untukmu.\n\n*HAPUS BAGIAN INI*\n(Jangan lupa kirimkan juga gambar kartu daging yang baru saja di-download)\n\nMohon maaf lahir & batin ✨🥩`;
             
             // 3. Salin ke Clipboard menggunakan API modern & Panggil Custom Alert
             navigator.clipboard.writeText(pesanWA).then(() => {

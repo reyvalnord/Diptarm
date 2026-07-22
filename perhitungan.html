@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Penghitung Total DiptARM Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#0b2a6f; --blue2:#1d4ed8; --gold:#d4af37; --gold2:#f5d26a;
+    --ice:#f6f8ff; --ink:#0b2a6f; --shadow:rgba(11,42,111,.16);
+    --green:#0d9488; --red:#e0473f; --gray:rgba(11,42,111,.62);
+    --purple:#7c5cbf; --coral:#e2793d;
+    --radius:18px;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ font-size:15px; }
+  body{
+    margin:0; padding:20px 14px 90px; font-family:'Poppins',sans-serif; color:var(--blue);
+    background:
+      radial-gradient(circle at 12% 15%, rgba(212,175,55,.16), transparent 45%),
+      radial-gradient(circle at 88% 20%, rgba(29,78,216,.12), transparent 44%),
+      radial-gradient(circle at 50% 110%, rgba(212,175,55,.10), transparent 48%),
+      linear-gradient(135deg,#ffffff 0%, #f0f4ff 55%, #ffffff 100%);
+    background-attachment:fixed; min-height:100vh; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:800px; margin:0 auto; }
+  svg.ic{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; vertical-align:-3px; }
+
+  header{
+    text-align:center; margin-bottom:16px; background:linear-gradient(180deg,#fff,var(--ice));
+    border-radius:20px; border:2.5px solid var(--ink); box-shadow:6px 6px 0px var(--shadow);
+    padding:20px 14px; position:relative; overflow:hidden;
+  }
+  header::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:7px;
+    background:linear-gradient(90deg, var(--gold) 0 22%, transparent 22% 78%, var(--gold) 78% 100%), linear-gradient(90deg,var(--blue) 0 100%);
+    opacity:.95;
+  }
+  header h1{
+    font-family:'Outfit',sans-serif; font-weight:900; font-size:1.45rem; margin:0 0 6px;
+    text-shadow:0 2px 0 rgba(255,255,255,.9); letter-spacing:.2px;
+  }
+  header .badge{
+    display:inline-block; font-weight:800; font-size:.72rem; color:var(--blue); letter-spacing:.3px;
+    background:rgba(212,175,55,.18); border:1.5px solid var(--ink); border-radius:999px;
+    padding:5px 14px;
+  }
+
+  .card{
+    background:linear-gradient(180deg,#fff,var(--ice)); border-radius:var(--radius); padding:20px;
+    box-shadow:6px 6px 0px var(--shadow); border:2.5px solid var(--ink); margin-bottom:20px;
+    position:relative; overflow:hidden;
+  }
+  .card h2{ font-family:'Outfit',sans-serif; font-weight:800; font-size:1.1rem; margin:0 0 14px; display:flex; align-items:center; gap:7px; }
+  .card h2 small{ display:block; color:var(--gray); font-weight:500; font-size:.75rem; margin-top:3px; }
+
+  .field{ margin-bottom:12px; }
+  .field textarea{
+    width:100%; border:2px solid rgba(11,42,111,.2); background:#fff; border-radius:12px; padding:12px;
+    font-family:'Poppins',sans-serif; font-size:.9rem; color:var(--blue); outline:none; transition:.2s;
+    resize:vertical; min-height:160px; line-height:1.5; white-space: pre-wrap;
+  }
+  .field textarea:focus{ border-color:var(--blue2); box-shadow:0 0 0 3px rgba(29,78,216,.12); }
+
+  .btn{
+    border:2.5px solid var(--gold); border-radius:13px; padding:12px 18px; font-weight:900;
+    font-family:'Outfit',sans-serif; cursor:pointer; transition:.2s cubic-bezier(.175,.885,.32,1.275);
+    width:100%; font-size:.9rem; text-transform:uppercase; letter-spacing:.3px;
+    box-shadow:4px 4px 0px rgba(11,42,111,.18); position:relative; display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn:hover{ transform:translateY(-2px); box-shadow:6px 6px 0px rgba(11,42,111,.22); }
+  .btn:active{ transform:translateY(2px); box-shadow:0 2px 0 var(--gold); }
+  .btn-primary{ background:var(--blue); color:#fff; border-color:var(--blue); }
+  .btn-gold{ background:linear-gradient(135deg,var(--gold),var(--gold2)); color:var(--blue); border-color:var(--blue); }
+
+  /* Table Styles */
+  .table-responsive {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    margin-bottom: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1.5px solid rgba(11,42,111,.15);
+    border-right: 1.5px solid rgba(11,42,111,.15);
+  }
+  th:last-child, td:last-child {
+    border-right: none;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  th {
+    background: rgba(29,78,216,.08);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    color: var(--blue);
+    white-space: nowrap;
+  }
+  td {
+    vertical-align: middle;
+    line-height: 1.4;
+  }
+  .td-bold {
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .td-highlight {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    color: var(--blue2);
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+  .calc-detail {
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .tag { 
+    font-size: 0.65rem; 
+    font-weight: 800; 
+    padding: 3px 6px; 
+    border-radius: 6px; 
+    border: 1.5px solid; 
+    white-space: nowrap;
+  }
+  .tag-fee { color: var(--purple); background: rgba(124,92,191,.1); border-color: rgba(124,92,191,.3); }
+  .tag-gabungan { color: var(--coral); background: rgba(226,121,61,.1); border-color: rgba(226,121,61,.4); }
+  .tag-lj { color: var(--green); background: rgba(13,148,136,.1); border-color: rgba(13,148,136,.4); }
+
+  .stats-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:16px;
+  }
+  .stat-card{
+    background:linear-gradient(135deg,var(--gold),var(--gold2)); border-radius:16px; padding:14px;
+    border:2px solid var(--blue); box-shadow:4px 4px 0px var(--shadow);
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+  }
+  .stat-card.light {
+    background: #fff;
+  }
+  .stat-card .s-lbl{ font-size:.7rem; font-weight:800; color:var(--blue); opacity:.9; text-transform:uppercase; margin-bottom:4px; }
+  .stat-card .s-val{ font-family:'Outfit',sans-serif; font-weight:900; font-size:1.6rem; color:var(--blue); line-height:1; }
+
+  #toast{
+    position:fixed; top:-100px; left:50%; transform:translateX(-50%); background:var(--blue); color:#fff;
+    padding:12px 20px; border-radius:14px; display:flex; align-items:center; gap:10px; font-weight:700;
+    font-size:.85rem; box-shadow:0 10px 30px rgba(0,0,0,.25); z-index:9999; transition:.5s cubic-bezier(.175,.885,.32,1.275);
+    border:2px solid var(--gold); min-width:220px; justify-content:center; text-align:center;
+  }
+  #toast.show{ top:16px; }
+  .toast-icon{ background:var(--gold); color:var(--blue); width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .toast-icon svg{ width:12px; height:12px; }
+
+  .hidden{ display:none !important; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+  #resultContainer:not(.hidden) { animation:fadeIn .4s ease; }
+</style>
+</head>
+<body>
+
+<div id="toast"><div class="toast-icon"><svg viewBox="0 0 24 24" class="ic"><polyline points="20 6 9 17 4 12"></polyline></svg></div><span id="toastMsg">Berhasil</span></div>
+
+<div class="wrap">
+  <header>
+    <h1>Penghitung Jaseb</h1>
+    <span class="badge">DiptARM Store &middot; Kalkulator Otomatis</span>
+  </header>
+
+  <div class="card">
+    <h2>Tempel Orderan<small>Langsung Copy Paste</small></h2>
+    <div class="field">
+      <textarea id="rawTextImport" placeholder="Contoh Format WA:&#10;- 1K LPM × 4d ✅&#10;- 1K LPM 2x 3d ✅&#10;- 1500 LPM 2x ✅&#10;- 1.5k LPFP vidio luar jam ✅"></textarea>
+    </div>
+    <button class="btn btn-primary" id="btnParseText">
+      <svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      Hitung Total
+    </button>
+  </div>
+
+  <div id="resultContainer" class="hidden">
+    <div class="card">
+      <h2>Detail Perhitungan</h2>
+      
+      <!-- Tabel Hasil -->
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Orderan Asli</th>
+              <th>Detail Hitung</th>
+              <th>Total Unit</th>
+              <th>Add-on</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Isi tabel di-generate via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Statistik Bawah -->
+      <h2>Rekap Keseluruhan</h2>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="s-lbl">Total LPM</div><div class="s-val" id="statLpm">0</div></div>
+        <div class="stat-card"><div class="s-lbl">Total LPFP</div><div class="s-val" id="statLpfp">0</div></div>
+        
+        <div class="stat-card light"><div class="s-lbl">Total Foto</div><div class="s-val" id="statFoto">0</div></div>
+        <div class="stat-card light"><div class="s-lbl">Total 18+</div><div class="s-val" id="stat18">0</div></div>
+        
+        <!-- Addon terpisah -->
+        <div class="stat-card light"><div class="s-lbl">Vid + Inrush</div><div class="s-val" id="statVidInrush">0</div></div>
+        <div class="stat-card light"><div class="s-lbl">Luar Jam</div><div class="s-val" id="statLuarJam">0</div></div>
+      </div>
+
+      <button class="btn btn-gold" id="btnSalinLaporan" style="margin-top:10px;">
+        <svg viewBox="0 0 24 24" class="ic"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Salin Laporan WA
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const formatNumber = n => Math.round(n||0).toLocaleString('id-ID');
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').innerText = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// Deteksi Angka (1500, 1.500, 1.5k, 1,5K dll). Sekarang me-return string asli juga.
+function parseQuantity(line) {
+  let matchK = line.match(/([\d\.,]+)\s*k\b/i);
+  if (matchK) {
+    let numStr = matchK[1].replace(',', '.'); 
+    return { val: parseFloat(numStr) * 1000, str: matchK[0] };
+  }
+  
+  let matchNum = line.match(/([\d\.,]+)\s*(?:lpm|lpfp)\b/i);
+  if (matchNum) {
+    let numStr = matchNum[1].replace(/\./g, '').replace(/,/g, ''); 
+    return { val: parseInt(numStr, 10), str: matchNum[0] };
+  }
+  
+  let matchFirst = line.match(/^[\-\*\•\s]*([\d\.,]+)/);
+  if (matchFirst) {
+    let numStr = matchFirst[1].replace(/\./g, '').replace(/,/g, '');
+    return { val: parseInt(numStr, 10), str: matchFirst[0] };
+  }
+  
+  return { val: 0, str: '' };
+}
+
+let parsedResults = [];
+
+function parseTextToOrders(text) {
+  const rawLines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  let results = [];
+
+  rawLines.forEach(line => {
+    // Bersihkan simbol list/centang di awal/akhir
+    let cleanLine = line.replace(/^[\-\*\•\d+[\.\)]\s*/, '').replace(/✅/g, '').trim();
+    if(!cleanLine) return;
+
+    let lower = cleanLine.toLowerCase();
+
+    // Wajib ada LPM atau LPFP
+    let type = "";
+    if (lower.includes('lpfp')) type = 'LPFP';
+    else if (lower.includes('lpm')) type = 'LPM';
+
+    if (!type) return;
+
+    // 1. Ambil Nilai Dasar
+    let baseParsed = parseQuantity(cleanLine);
+    if(baseParsed.val === 0) return;
+    let baseJumlah = baseParsed.val;
+
+    // Hapus string dasar dari kalimat agar tidak disalahartikan sebagai pengali (misal: "1500x")
+    let tempLine = cleanLine.replace(baseParsed.str, '');
+
+    // 2. Logika Deteksi Sesi & Hari yang Presisi 
+    let sesi = 1;
+    let hari = 1;
+
+    // Cari spesifik hari (mendukung x 2 d, 2x d, 2 d, 2d, dll)
+    let hariMatch = tempLine.match(/(?:[xX×\*]\s*)?(\d+)\s*[xX×\*]?\s*(?:d|day|hari)\b/i);
+    if (hariMatch) {
+      hari = parseInt(hariMatch[1], 10);
+      tempLine = tempLine.replace(hariMatch[0], '');
+    }
+
+    // Cari spesifik sesi (mendukung x 2 s, 2x s, 2 s, 2s, dll)
+    let sesiMatch = tempLine.match(/(?:[xX×\*]\s*)?(\d+)\s*[xX×\*]?\s*(?:s|sesi)\b/i);
+    if (sesiMatch) {
+      sesi = parseInt(sesiMatch[1], 10);
+      tempLine = tempLine.replace(sesiMatch[0], '');
+    }
+
+    // Jika masih ada pengali universal (contoh: 2x, x2, 2 x, x 2 tanpa s atau d), itu masuk ke sesi
+    // (?:\W|^) mencegah menangkap teks menyatu seperti "M2x"
+    let genericX = tempLine.match(/(?:^|\W)([xX×\*]\s*(\d+)|(\d+)\s*[xX×\*])(?:\W|$)/i);
+    if (genericX) {
+      sesi = parseInt(genericX[2] || genericX[3], 10);
+      tempLine = tempLine.replace(genericX[1], ''); // Hapus string yang cocok
+      
+      // Cek apakah ada pengali kedua setelahnya (contoh pesanan: 2x 3x)
+      let secondX = tempLine.match(/(?:^|\W)([xX×\*]\s*(\d+)|(\d+)\s*[xX×\*])(?:\W|$)/i);
+      if(secondX) {
+         hari = parseInt(secondX[2] || secondX[3], 10);
+         tempLine = tempLine.replace(secondX[1], '');
+      }
+    }
+
+    // Total = Unit Dasar x Sesi x Hari
+    let totalUnits = baseJumlah * sesi * hari;
+
+    // 3. Deteksi Add-on
+    let hasFoto = lower.includes('pict') || lower.includes('foto');
+    let has18 = lower.includes('18+') || lower.includes('nsfw');
+    
+    // Pemisahan variabel Video dan Inrush
+    let hasVideo = lower.includes('video') || lower.includes('vidio');
+    let hasInrush = lower.includes('rush') || lower.includes('inrush');
+    let hasLuarJam = lower.includes('luar jam') || lower.includes('luarjam') || lower.includes('lj');
+    
+    // Perhitungan add-on standar
+    let countFoto = hasFoto ? (1 * sesi * hari) : 0;
+    let count18 = has18 ? (1 * sesi * hari) : 0;
+    
+    // Vidio dikali sesi & hari, Inrush hitung datar (tetap 1)
+    let countVideo = hasVideo ? (1 * sesi * hari) : 0;
+    let countInrush = hasInrush ? 1 : 0;
+    let countVidInrush = countVideo + countInrush; // Dijumlahkan untuk ditampilkan
+    
+    // Luar jam tetap dikali hari
+    let countLuarJam = hasLuarJam ? (1 * hari) : 0;
+
+    results.push({
+      original: cleanLine,
+      type,
+      baseJumlah,
+      sesi,
+      hari,
+      totalUnits,
+      countFoto,
+      count18,
+      countVidInrush,
+      countLuarJam
+    });
+  });
+
+  return results;
+}
+
+document.getElementById('btnParseText').addEventListener('click', () => {
+  const raw = document.getElementById('rawTextImport').value.trim();
+  if(!raw) { toast('Teks masih kosong!'); return; }
+
+  parsedResults = parseTextToOrders(raw);
+  
+  if(!parsedResults.length) {
+    toast('Gagal mendeteksi! Pastikan format mengandung LPM/LPFP.');
+    document.getElementById('resultContainer').classList.add('hidden');
+    return;
+  }
+
+  // Siapkan Variabel Total
+  let grandLpm = 0;
+  let grandLpfp = 0;
+  let totalFoto = 0;
+  let total18 = 0;
+  let totalVidInrush = 0;
+  let totalLuarJam = 0;
+
+  // Render Tabel
+  const tableBody = document.getElementById('tableBody');
+  tableBody.innerHTML = parsedResults.map(item => {
+    
+    // Tambah ke Rekap Total Keseluruhan
+    if(item.type === 'LPM') grandLpm += item.totalUnits;
+    if(item.type === 'LPFP') grandLpfp += item.totalUnits;
+    totalFoto += item.countFoto;
+    total18 += item.count18;
+    totalVidInrush += item.countVidInrush;
+    totalLuarJam += item.countLuarJam;
+
+    // Susun Teks Detail (Contoh: "1.000 x 4 Hari")
+    let detailArr = [formatNumber(item.baseJumlah)];
+    if(item.sesi > 1) detailArr.push(`${item.sesi} Sesi`);
+    if(item.hari > 1) detailArr.push(`${item.hari} Hari`);
+    let detailHitung = detailArr.join(' x ');
+
+    // Susun HTML Tag untuk Add-on
+    let addonHtml = '';
+    if(item.countFoto) addonHtml += `<span class="tag tag-fee">Foto: ${item.countFoto}</span>`;
+    if(item.count18) addonHtml += `<span class="tag tag-fee">18+: ${item.count18}</span>`;
+    if(item.countVidInrush) addonHtml += `<span class="tag tag-gabungan">Vid+Inrush: ${item.countVidInrush}</span>`;
+    if(item.countLuarJam) addonHtml += `<span class="tag tag-lj">Luar Jam: ${item.countLuarJam}</span>`;
+    if(!addonHtml) addonHtml = '<span class="calc-detail">-</span>';
+
+    return `
+      <tr>
+        <td class="td-bold">${item.original}</td>
+        <td>
+          <div class="calc-detail">${detailHitung}</div>
+        </td>
+        <td class="td-highlight">${formatNumber(item.totalUnits)} ${item.type}</td>
+        <td><div class="tags-wrapper">${addonHtml}</div></td>
+      </tr>
+    `;
+  }).join('');
+
+  // Tampilkan Angka Total
+  document.getElementById('statLpm').innerText = formatNumber(grandLpm);
+  document.getElementById('statLpfp').innerText = formatNumber(grandLpfp);
+  document.getElementById('statFoto').innerText = totalFoto;
+  document.getElementById('stat18').innerText = total18;
+  document.getElementById('statVidInrush').innerText = totalVidInrush;
+  document.getElementById('statLuarJam').innerText = totalLuarJam;
+
+  // Munculkan kontainer hasil
+  document.getElementById('resultContainer').classList.remove('hidden');
+  toast('Berhasil Dihitung!');
+  
+  // Scroll mulus
+  document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('btnSalinLaporan').addEventListener('click', () => {
+  if(!parsedResults.length) return;
+
+  let grandLpm = 0;
+  let grandLpfp = 0;
+  let totalFoto = 0;
+  let total18 = 0;
+  let totalVidInrush = 0;
+  let totalLuarJam = 0;
+
+  let textLines = [
+    `*REKAP ORDERAN*`,
+    ``
+  ];
+
+  parsedResults.forEach((item) => {
+    if(item.type === 'LPM') grandLpm += item.totalUnits;
+    if(item.type === 'LPFP') grandLpfp += item.totalUnits;
+    totalFoto += item.countFoto;
+    total18 += item.count18;
+    totalVidInrush += item.countVidInrush;
+    totalLuarJam += item.countLuarJam;
+    
+    textLines.push(`- ${item.original} ✅`);
+  });
+
+  textLines.push(``);
+  textLines.push(`📊 *TOTAL KESELURUHAN:*`);
+  if(grandLpm > 0) textLines.push(`• Total LPM: ${formatNumber(grandLpm)} LPM`);
+  if(grandLpfp > 0) textLines.push(`• Total LPFP: ${formatNumber(grandLpfp)} LPFP`);
+  if(totalFoto > 0) textLines.push(`• Jumlah Foto: ${totalFoto}`);
+  if(total18 > 0) textLines.push(`• Jumlah 18+: ${total18}`);
+  if(totalVidInrush > 0) textLines.push(`• Jumlah Vid+Inrush: ${totalVidInrush}`);
+  if(totalLuarJam > 0) textLines.push(`• Jumlah Luar Jam: ${totalLuarJam}`);
+
+  navigator.clipboard.writeText(textLines.join('\n'));
+  toast('Laporan disalin ke Clipboard!');
+});
+</script>
+</body>
+</html>
